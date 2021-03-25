@@ -11,12 +11,12 @@
                v-loading="loading">
         <div class="login_title" style="">登录</div>
 
-        <el-form-item prop="id" label="帐号" class="form-label" style="text-align: left"
+        <el-form-item prop="id" label="用户名" class="form-label" style="text-align: left"
                       label-width="80px">
           <el-input type="text"
                     v-model="loginForm.id"
                     auto-complete="off"
-                    placeholder="请输入账号"></el-input>
+                    placeholder="请输入用户名"></el-input>
         </el-form-item>
 
         <el-form-item prop="password" label="密码" class="form-label" style="text-align: left" label-width="80px">
@@ -54,7 +54,7 @@ export default {
         password: ''
       },
       rules: {
-        id: [{required: true, message: '帐号不得为空', trigger: 'blur'}],
+        id: [{required: true, message: '用户名不得为空', trigger: 'blur'}],
         password: [{required: true, message: '密码不得为空', trigger: 'blur'}]
       },
       loading: false,
@@ -65,7 +65,7 @@ export default {
     login() {
       if (this.loginForm.id === "" ||
         this.loginForm.password === "") {
-        this.$message.error('帐号和密码均不得为空');
+        this.$message.error('用户名和密码均不得为空');
         return;
       }
 
@@ -82,12 +82,12 @@ export default {
             message: '登陆成功',
             type: 'success'
           });
-          this.$store.commit('setCurrentId', resp.data);
+          this.$store.commit('setCurrentId', resp.data.user);
           this.$router.replace({path: '/Main'})
         }
       })
         .catch(error => {
-            this.$message.error('帐号或密码错误');
+            this.$message.error('用户名或密码错误');
             console.log(error)
           }
         );

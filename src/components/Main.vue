@@ -8,7 +8,7 @@
 import * as Three from 'three'
 
 export default {
-  name: 'Try',
+  name: 'Main',
   data() {
     return {
       camera: null,

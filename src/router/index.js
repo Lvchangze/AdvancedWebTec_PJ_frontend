@@ -28,7 +28,6 @@ export const router = new Router({
       path: '/Main',
       name: 'Main',
       component: Main,
-      redirect: 'Search',
       // children: [
       //   {
       //     path: '/Search',

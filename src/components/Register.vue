@@ -6,14 +6,19 @@
                label-width="0px" v-loading="loading" :ref="registerForm">
         <div class="register_title" style="color: black;font-size: 32px">注册</div>
 
-        <el-form-item prop="id" class="form-label" label="账号" label-width="80px">
+        <el-form-item prop="id" class="form-label" label="用户名" label-width="80px">
           <el-input type="text" v-model="registerForm.id"
-                    auto-complete="off" placeholder="请输入账号" style="width: 250px"></el-input>
+                    auto-complete="off" placeholder="请输入用户名" style="width: 250px"></el-input>
         </el-form-item>
 
         <el-form-item prop="password" class="form-label" label="密码" label-width="80px">
           <el-input type="password" v-model="registerForm.password"
                     auto-complete="off" placeholder="请输入密码" style="width: 250px"></el-input>
+        </el-form-item>
+
+        <el-form-item prop="age" class="form-label" label="年龄" label-width="80px">
+          <el-input type="text" v-model="registerForm.age"
+                    auto-complete="off" placeholder="请输入年龄" style="width: 250px"></el-input>
         </el-form-item>
 
         <el-form-item prop="gender" class="form-label" label="性别" label-width="80px">
@@ -25,11 +30,6 @@
               :value="item.value">
             </el-option>
           </el-select>
-        </el-form-item>
-
-        <el-form-item prop="age" class="form-label" label="年龄" label-width="80px">
-          <el-input type="text" v-model="registerForm.age"
-                    auto-complete="off" placeholder="请输入年龄" style="width: 250px"></el-input>
         </el-form-item>
 
         <el-form-item style="width: 100%;margin-top: 50px;margin-left: -10px">
@@ -55,16 +55,16 @@ export default {
   data() {
     return {
       rules: {
-        id: [{required: true, message: '账号不得为空', trigger: 'blur'}],
+        id: [{required: true, message: '用户名不得为空', trigger: 'blur'}],
         password: [{required: true, message: '密码不得为空', trigger: 'blur'}],
-        gender: [{required: true, message: '性别不得为空', trigger: 'blur'}],
         age: [{required: true, message: '年龄不得为空', trigger: 'blur'}],
+        gender: [{required: true, message: '性别不得为空', trigger: 'blur'}],
       },
       registerForm: {
         id: '',
         password: '',
-        gender: '',
         age: '',
+        gender: '',
       },
       loading: false,
       genderOption: [
@@ -113,7 +113,7 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error('注册失败');
+          this.$message.error('注册失败，用户名已存在');
           console.log(error)
         })
     }
