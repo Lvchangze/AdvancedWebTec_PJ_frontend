@@ -11,12 +11,12 @@
                v-loading="loading">
         <div class="login_title" style="">登录</div>
 
-        <el-form-item prop="id" label="工号" class="form-label" style="text-align: left"
+        <el-form-item prop="id" label="帐号" class="form-label" style="text-align: left"
                       label-width="80px">
           <el-input type="text"
                     v-model="loginForm.id"
                     auto-complete="off"
-                    placeholder="请输入工号"></el-input>
+                    placeholder="请输入账号"></el-input>
         </el-form-item>
 
         <el-form-item prop="password" label="密码" class="form-label" style="text-align: left" label-width="80px">
@@ -44,84 +44,97 @@
 </template>
 
 <script>
-  export default {
-    name: 'Login',
+export default {
+  name: 'Login',
 
-    data() {
-      return {
-        loginForm: {
-          id: '',
-          password: ''
-        },
-        rules: {
-          id: [{required: true, message: '工号不得为空', trigger: 'blur'}],
-          password: [{required: true, message: '密码不得为空', trigger: 'blur'}]
-        },
-        loading: false,
-      }
-    },
-
-    methods: {
-      login() {
-        if (this.loginForm.id === "" ||
-          this.loginForm.password === "") {
-          this.$message.error('工号和密码均不得为空');
-          return;
-        }
-        this.$axios.post('/login', {
-
-        })
-          .then(resp => {
-
-          })
-          .catch(error => {
-              console.log(error)
-            }
-          );
-      }
+  data() {
+    return {
+      loginForm: {
+        id: '',
+        password: ''
+      },
+      rules: {
+        id: [{required: true, message: '帐号不得为空', trigger: 'blur'}],
+        password: [{required: true, message: '密码不得为空', trigger: 'blur'}]
+      },
+      loading: false,
     }
-    ,
+  },
+
+  methods: {
+    login() {
+      if (this.loginForm.id === "" ||
+        this.loginForm.password === "") {
+        this.$message.error('帐号和密码均不得为空');
+        return;
+      }
+
+      let loginFormData = new FormData();
+      loginFormData.append("id", this.loginForm.id);
+      loginFormData.append("password", this.loginForm.password);
+
+      this.$axios.post('/login',
+        loginFormData
+      ).then(resp => {
+        console.log(resp)
+        if (resp.status === 200) {
+          this.$message({
+            message: '登陆成功',
+            type: 'success'
+          });
+          this.$store.commit('setCurrentId', resp.data);
+          this.$router.replace({path: '/Main'})
+        }
+      })
+        .catch(error => {
+            this.$message.error('帐号或密码错误');
+            console.log(error)
+          }
+        );
+    }
   }
+  ,
+}
 </script>
 
 <style scoped>
-  #base_login {
-    background: url("../assets/bg.jpeg") repeat center;
-    height: 100%;
-    width: 100%;
-    background-size: cover;
-    position: fixed;
-  }
+#base_login {
+  background: url("../assets/bg.jpeg") repeat center;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  position: fixed;
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-  }
+body {
+  margin: 0;
+  padding: 0;
+}
 
-  .login_container {
-    border-radius: 3px;
-    background-clip: padding-box;
-    top: 50%;
-    position: relative;
-    height: 450px;
-    margin: -250px auto;
-    width: 330px;
-    padding: 35px 35px 15px 35px;
-    background: #fff;
-    border: 1px solid #eaeaea;
-  }
+.login_container {
+  border-radius: 3px;
+  background-clip: padding-box;
+  top: 50%;
+  position: relative;
+  height: 400px;
+  margin: -250px auto;
+  width: 330px;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+}
 
-  .login_title {
-    margin: 5px auto 45px auto;
-    text-align: center;
-    font-size: 32px;
-    color: black;
-  }
+.login_title {
+  margin: 5px auto 45px auto;
+  text-align: center;
+  font-size: 32px;
+  color: black;
+}
 </style>
 <style>
-  .login_container .form-label .el-form-item__label {
-    padding-bottom: 3px;
-    color: #888888;
-    font-size: 12px;
-  }
+.login_container .form-label .el-form-item__label {
+  padding-bottom: 3px;
+  color: #888888;
+  font-size: 12px;
+}
 </style>

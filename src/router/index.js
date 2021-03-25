@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login'
 import Register from '../components/Register'
-import Try from '../components/Try'
+import Main from '../components/Main'
 
 Vue.use(Router)
 
@@ -25,22 +25,17 @@ export const router = new Router({
       component: Register,
     },
     {
-      path: '/try',
-      name: 'Try',
-      component: Try,
+      path: '/Main',
+      name: 'Main',
+      component: Main,
+      redirect: 'Search',
+      // children: [
+      //   {
+      //     path: '/Search',
+      //     name: 'Search',
+      //     component: Search,
+      //   },
+      // ]
     },
-    // {
-    //   path: '/Main',
-    //   name: 'Main',
-    //   component: Main,
-    //   redirect: 'Search',
-    //   children: [
-    //     {
-    //       path: '/Search',
-    //       name: 'Search',
-    //       component: Search,
-    //     },
-    //   ]
-    // },
   ]
 })
