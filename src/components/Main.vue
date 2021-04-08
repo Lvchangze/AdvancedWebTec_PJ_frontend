@@ -1,6 +1,7 @@
 <template>
   <el-container>
     <el-main>
+      <h2>欢迎{{ this.userId }}</h2>
       <el-button type="primary" v-on:click="logout">退出登录</el-button>
       <div>
         <div id="container">
@@ -19,9 +20,13 @@ export default {
     let testFormData = new FormData();
     testFormData.append("id", "lvchangze");
     this.$axios.post("/test", testFormData)
+      .then(resp => {
+        console.log(resp)
+      })
   },
   data() {
     return {
+      userId: this.$store.state.currentId,
       camera: null,
       scene: null,
       renderer: null,

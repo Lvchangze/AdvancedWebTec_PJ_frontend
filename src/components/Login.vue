@@ -79,7 +79,8 @@ export default {
         if (resp.status === 200) {
           this.$message({
             message: '登陆成功',
-            type: 'success'
+            type: 'success',
+            duration: 1000
           });
           this.$store.commit('changeLogin', resp.data)
           this.$router.replace({path: '/Main'})
