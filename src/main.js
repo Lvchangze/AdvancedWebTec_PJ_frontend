@@ -14,6 +14,20 @@ axios.defaults.baseURL = '/api'
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post['Content-Type'] = "application/json;charset=UTF-8";
 
+//http 请求 拦截器
+axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('Authorization')) {
+      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization');
+      console.log(config.headers.Authorization)
+    }
+    return config;
+  },
+  error => {
+    console.log(error)
+    return Promise.reject(error);
+  });
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

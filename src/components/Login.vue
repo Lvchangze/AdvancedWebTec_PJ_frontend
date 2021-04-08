@@ -72,7 +72,6 @@ export default {
       let loginFormData = new FormData();
       loginFormData.append("id", this.loginForm.id);
       loginFormData.append("password", this.loginForm.password);
-
       this.$axios.post('/login',
         loginFormData
       ).then(resp => {
@@ -82,7 +81,7 @@ export default {
             message: '登陆成功',
             type: 'success'
           });
-          this.$store.commit('setCurrentId', resp.data.user);
+          this.$store.commit('changeLogin', resp.data)
           this.$router.replace({path: '/Main'})
         }
       })
