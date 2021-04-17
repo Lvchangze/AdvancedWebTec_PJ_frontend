@@ -10,10 +10,10 @@ export default new Vuex.Store({
   },
   mutations: {
     changeLogin (state, data) {
-      localStorage.setItem('Authorization', data.token);
-      state.Authorization = data.Authorization;
       localStorage.setItem('currentId', data.id);
       state.currentId = data.id;
+      localStorage.setItem('Authorization', data.token);
+      state.Authorization = data.token;
     },
     logout(state) {
       localStorage.removeItem('currentId');

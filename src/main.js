@@ -6,9 +6,11 @@ import {router} from './router'
 import store from './store'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
+
 Vue.use(Element)
 
 import axios from 'axios'
+
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = '/api'
 axios.defaults.withCredentials = true;
@@ -17,9 +19,10 @@ axios.defaults.headers.post['Content-Type'] = "application/json;charset=UTF-8";
 //http 请求 拦截器
 axios.interceptors.request.use(
   config => {
-    if (localStorage.getItem('Authorization')) {
-      config.headers.Authorization = 'Bearer ' + localStorage.getItem('Authorization');
-      console.log(config.headers.Authorization)
+    console.log("store.state.Authorization: " + store.state.Authorization)
+    if (store.state.Authorization) {
+      config.headers.Authorization = 'Bearer ' + store.state.Authorization;
+      console.log(config)
     }
     return config;
   },
