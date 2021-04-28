@@ -83,6 +83,7 @@ export default {
             duration: 1000
           });
           this.$store.commit('changeLogin', resp.data)
+          this.$store.commit('webSocketConnect')
           this.$router.replace({path: '/Main'})
         }
       })
