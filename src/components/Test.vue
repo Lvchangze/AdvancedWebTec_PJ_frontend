@@ -10,6 +10,8 @@
   import {DragControls} from 'three/examples/jsm/controls/DragControls'
   import {TransformControls} from 'three/examples/jsm/controls/TransformControls'
   import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls'
+  import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader'
+  import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader'
 
   export default {
     name: "Test",
@@ -21,8 +23,7 @@
         renderer: null,
         orbitControls:null,
         mobileControls:null,
-        myBody:null,
-        myHead:null,
+        model:null,
         moveForward:false,
         moveLeft:false,
         moveBackward:false,
@@ -60,7 +61,7 @@
       },
       initLight(){
         //点光源
-        let point = new Three.PointLight(0xffffff);
+        let point = new Three.PointLight(0x888888);
         point.position.set(400,200,300);
         this.scene.add(point);
 
@@ -95,45 +96,34 @@
         this.scene.add(base);
       },
       initPerson() {
-        this.myHead = new Three.Mesh(
-          new Three.SphereBufferGeometry(10,100,100),
-          new Three.MeshLambertMaterial({color:0xFFF9E9})
-        );
-        this.myHead.name = 'myHead';
-        this.myHead.position.set(0,41,0);
-        this.scene.add(this.myHead);
+        let that = this;
+        let loader = new MMDLoader();
+        loader.load('static/烟绯/烟绯.pmx',function (mesh) {
+          that.model = mesh;
+          mesh.scale.multiplyScalar(5);
+          that.scene.add(mesh);
+        })
 
-        this.myBody = new Three.Mesh(
-          new Three.CylinderGeometry(8,10,30,100),
-          new Three.MeshLambertMaterial({color:0xFFF9E9})
-        );
-        this.myBody.name = 'myBody';
-        this.myBody.position.set(0,15,0);
-
-        this.scene.add(this.myBody);
       },
       render(){
         let that = this;
         requestAnimationFrame(this.render);
         this.renderer.render(this.scene,this.camera);
+        this.renderer.shadowMap.enabled = true;
 
         if (this.moveForward){
-          this.myBody.position.z -= 1;
-          this.myHead.position.z -= 1;
+          this.model.position.z -= 1;
 
         }
         if (this.moveBackward){
-          this.myBody.position.z += 1;
-          this.myHead.position.z += 1;
+          this.model.position.z += 1;
         }
         if (this.moveLeft){
-          this.myBody.position.x -= 1;
-          this.myHead.position.x -= 1;
+          this.model.position.x -= 1;
 
         }
         if (this.moveRight){
-          this.myBody.position.x += 1;
-          this.myHead.position.x += 1;
+          this.model.position.x += 1;
         }
       },
       initControls(){
