@@ -12,6 +12,7 @@
   import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls'
   import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader'
   import {MMDLoader} from 'three/examples/jsm/loaders/MMDLoader'
+  import {MMDAnimationHelper} from 'three/examples/jsm/animation/MMDAnimationHelper'
 
   export default {
     name: "Test",
@@ -51,7 +52,7 @@
       },
       initCamera(){
         this.camera = new Three.PerspectiveCamera(70, this.container.clientWidth / this.container.clientHeight, 1, 5000);
-        this.camera.position.set(100,150,400);
+        this.camera.position.set(-125,250,-500);
         this.camera.lookAt(this.scene.position);
       },
       initWebGLRender(){
@@ -62,11 +63,11 @@
       initLight(){
         //点光源
         let point = new Three.PointLight(0x888888);
-        point.position.set(400,200,300);
+        point.position.set(-400,200,-300);
         this.scene.add(point);
 
         //环境光
-        let ambientLight = new Three.AmbientLight(0x444444);
+        let ambientLight = new Three.AmbientLight(0x666666);
         this.scene.add(ambientLight);
       },
       initBase(){
@@ -74,13 +75,13 @@
           new Three.CylinderGeometry(3,3,160,100),
           new Three.MeshLambertMaterial({color: 0x754E2F})
         );
-        stick.position.set(-200,80,-100);
+        stick.position.set(-200,80,100);
 
         let stick1 = stick.clone();
-        stick1.position.set(0,80,-100);
+        stick1.position.set(0,80,100);
 
         let stick2 = stick.clone();
-        stick2.position.set(200,80,-100);
+        stick2.position.set(200,80,100);
 
         let sticks = new Three.Group();
         sticks.add(stick);
@@ -89,7 +90,7 @@
         this.scene.add(sticks);
 
         let base = new Three.Mesh(
-          new Three.BoxGeometry(1000,10,500),
+          new Three.BoxGeometry(1200,10,700),
           new Three.MeshLambertMaterial({color:0xC7C739})
         );
         base.position.set(0,-5,0);
@@ -98,32 +99,42 @@
       initPerson() {
         let that = this;
         let loader = new MMDLoader();
+        /*let helper = new MMDAnimationHelper();
+        loader.loadWithAnimation('static/烟绯/烟绯.pmx','static/Walk.vmd',function (mmd) {
+          helper.add(mmd.mesh,{
+            animation: mmd.animation,
+            physics:true
+          });
+          that.model = mmd.mesh;
+          that.scene.add(mmd.mesh);
+
+        })*/
         loader.load('static/烟绯/烟绯.pmx',function (mesh) {
           that.model = mesh;
-          mesh.scale.multiplyScalar(5);
+          mesh.scale.multiplyScalar(7);
+          mesh.position.set(0,0,-170);
           that.scene.add(mesh);
         })
-
       },
       render(){
         let that = this;
         requestAnimationFrame(this.render);
         this.renderer.render(this.scene,this.camera);
-        this.renderer.shadowMap.enabled = true;
+        //this.renderer.shadowMap.enabled = true;
 
         if (this.moveForward){
-          this.model.position.z -= 1;
+          this.model.position.z += 5;
 
         }
         if (this.moveBackward){
-          this.model.position.z += 1;
+          this.model.position.z -= 5;
         }
         if (this.moveLeft){
-          this.model.position.x -= 1;
+          this.model.position.x += 5;
 
         }
         if (this.moveRight){
-          this.model.position.x += 1;
+          this.model.position.x -= 5;
         }
       },
       initControls(){
