@@ -1,24 +1,14 @@
 <template>
   <el-container>
+    <el-header width="100%" style="z-index: 99;padding-left: 15px;">
+      <div class="right">
+        <span>欢迎 {{this.userId}} </span>
+        <div class="logout"><span class="txt" v-on:click="gotoUserInfo">查看个人信息</span></div>
+        <div class="logout"><span class="txt" v-on:click="logout">退出登录</span></div>
+      </div>
+    </el-header>
     <el-main>
-      <h2>欢迎{{ this.userId }}</h2>
-      <el-button type="primary" v-on:click="logout">退出登录</el-button>
-      <el-table
-        :data="userData"
-        style="width: 100%">
-        <el-table-column
-          prop="id"
-          label="昵称">
-        </el-table-column>
-        <el-table-column
-          prop="age"
-          label="年龄">
-        </el-table-column>
-        <el-table-column
-          prop="gender"
-          label="性别">
-        </el-table-column>
-      </el-table>
+      <el-button type="primary" v-on:click="gotoVirtualScene">选择该场景</el-button>
     </el-main>
   </el-container>
 </template>
@@ -29,7 +19,13 @@ export default {
   data() {
     return {
       userId: this.$store.state.currentId,
-      userData: [],
+      userData: [
+        {
+          id:"lvchangze",
+          age: 22,
+          gender: 1
+        }
+      ],
       websocket: this.$store.getters.getSocketConn,
     }
   },
@@ -82,12 +78,44 @@ export default {
       this.$router.push('/login');
       this.websocket.close()
     },
+    gotoUserInfo(){
+      this.$router.push('/UserInfo')
+    },
+    gotoVirtualScene(){
+      this.$router.push('/VirtualScene')
+    },
   },
 
 }
 </script>
+
 <style scoped>
-#container {
-  height: 400px;
+.el-header {
+  text-align: center;
+  line-height: 60px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .08)
 }
+
+.el-header .right .logout {
+  margin-left: 20px;
+  display: inline-block;
+}
+
+.el-header .right .logout .txt {
+  cursor: pointer;
+  color: #939699;
+  font-size: 13px;
+}
+
+.el-header .right .logout .txt:hover {
+  color: black;
+}
+
+.right {
+  float: right;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 </style>
+

@@ -33,7 +33,7 @@ export default new Vuex.Store({
       state.socketConn = null;
     },
     webSocketConnect(state){
-      state.socketConn = new WebSocket("ws://localhost:8080/ws")
+      state.socketConn = new WebSocket("ws://localhost:8080/conn")
     }
   },
   actions: {}

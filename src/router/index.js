@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import Main from '../components/Main'
-import Test from "../components/Test";
+import VirtualScene from "../components/VirtualScene"
+import UserInfo from "../components/UserInfo"
 
 Vue.use(Router)
 
@@ -26,9 +27,14 @@ export const router = new Router({
       component: Register,
     },
     {
-      path: '/Test',
-      name: 'Test',
-      component: Test,
+      path: '/VirtualScene',
+      name: 'VirtualScene',
+      component: VirtualScene,
+    },
+    {
+      path: '/UserInfo',
+      name: 'UserInfo',
+      component: UserInfo,
     },
     {
       path: '/Main',
@@ -37,16 +43,6 @@ export const router = new Router({
       meta: {
         requireAuth: true, // 需要登录权限
       },
-      children: [
-        // {
-        //   path: '/Search',
-        //   name: 'Search',
-        //   component: Search,
-        //   meta: {
-        //     confirmIdentity: true,
-        //   }
-        // },
-      ]
     },
   ]
 })
