@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import * as Three from 'three'
-
 export default {
   name: 'Main',
   data() {
