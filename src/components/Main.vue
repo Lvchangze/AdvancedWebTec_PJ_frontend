@@ -26,57 +26,56 @@ export default {
           gender: 1
         }
       ],
-      websocket: this.$store.getters.getSocketConn,
+      // websocket: this.$store.getters.getSocketConn,
     }
   },
   created() {
-    this.$axios.post("/listAllUsers", "")
-      .then(resp => {
-        this.userData = resp.data.allUsers
-        for (let i = 0; i < this.userData.length; i++) {
-          if (this.userData[i].gender === 0) {
-            this.userData[i].gender = "男"
-          } else {
-            this.userData[i].gender = "女"
-          }
-        }
-        console.log(resp)
-      })
+    // this.$axios.post("/listAllUsers", "")
+    //   .then(resp => {
+    //     this.userData = resp.data.allUsers
+    //     for (let i = 0; i < this.userData.length; i++) {
+    //       if (this.userData[i].gender === 0) {
+    //         this.userData[i].gender = "男"
+    //       } else {
+    //         this.userData[i].gender = "女"
+    //       }
+    //     }
+    //   })
 
     //连接后端的WebSocket
-    if (window.WebSocket) {
-      const websocket = this.$store.getters.getSocketConn;
-
-      //第一次连接websocket
-      websocket.onopen = function () {
-        websocket.send(localStorage.getItem("currentId"));
-        console.log("WebSocket连接成功");
-      };
-
-      //接收到消息
-      websocket.onmessage = function (event) {
-        console.log(event.data)
-      };
-      //连接发生错误
-      websocket.onerror = function () {
-        console.log("WebSocket连接发生错误");
-      };
-      //连接关闭
-      websocket.onclose = function () {
-        console.log("WebSocket连接关闭");
-      };
-      //监听窗口关闭事件，当窗口关闭时，主动关闭websocket连接
-      window.onbeforeunload = function () {
-        websocket.close()
-      };
-    }
+    // if (window.WebSocket) {
+    //   const websocket = this.$store.getters.getSocketConn;
+    //
+    //   //第一次连接websocket
+    //   websocket.onopen = function () {
+    //     websocket.send(localStorage.getItem("currentId"));
+    //     console.log("WebSocket连接成功");
+    //   };
+    //
+    //   //接收到消息
+    //   websocket.onmessage = function (event) {
+    //     console.log(event.data)
+    //   };
+    //   //连接发生错误
+    //   websocket.onerror = function () {
+    //     console.log("WebSocket连接发生错误");
+    //   };
+    //   //连接关闭
+    //   websocket.onclose = function () {
+    //     console.log("WebSocket连接关闭");
+    //   };
+    //   //监听窗口关闭事件，当窗口关闭时，主动关闭websocket连接
+    //   window.onbeforeunload = function () {
+    //     websocket.close()
+    //   };
+    // }
   },
 
   methods: {
     logout() {
       this.$store.commit('logout')
       this.$router.push('/login');
-      this.websocket.close()
+      // this.websocket.close()
     },
     gotoUserInfo(){
       this.$router.push('/UserInfo')

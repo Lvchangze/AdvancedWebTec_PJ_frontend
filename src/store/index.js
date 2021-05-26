@@ -7,12 +7,12 @@ export default new Vuex.Store({
   state: {
     Authorization: localStorage.getItem('Authorization') || null,//存token
     currentId: localStorage.getItem('currentId') || null,//存当前用户的id
-    socketConn: null,//存当前用户的websocket
+    // socketConn: null,//存当前用户的websocket
   },
   getters: {
-    getSocketConn(state){
-      return state.socketConn
-    },
+    // getSocketConn(state){
+    //   return state.socketConn
+    // },
     getCurrentId(state){
       return state.currentId
     }
@@ -27,14 +27,14 @@ export default new Vuex.Store({
     logout(state) {
       localStorage.removeItem('currentId');
       localStorage.removeItem('Authorization');
-      localStorage.removeItem('socketConn');
+      // localStorage.removeItem('socketConn');
       state.currentId = null;
       state.Authorization = null;
-      state.socketConn = null;
+      // state.socketConn = null;
     },
-    webSocketConnect(state){
-      state.socketConn = new WebSocket("ws://localhost:8080/conn")
-    }
+    // webSocketConnect(state){
+    //   state.socketConn = new WebSocket("ws://localhost:8080/conn")
+    // }
   },
   actions: {}
 })
