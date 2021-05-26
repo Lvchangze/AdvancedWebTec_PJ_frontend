@@ -221,12 +221,13 @@ export default {
         console.log("WebSocketChat连接成功");
       };
 
+      let that = this;
       this.webSocketChat.onmessage = function (event) {
         //获取服务端消息
         const message = JSON.parse(event.data) || {};
         console.log(message)
         if (message.type === "SPEAK") {
-          this.chatList.push(message)
+          that.chatList.push(message)
         }
       };
 

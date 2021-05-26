@@ -5,16 +5,35 @@ import Register from '../components/Register'
 import Main from '../components/Main'
 import VirtualScene from "../components/VirtualScene"
 import UserInfo from "../components/UserInfo"
+import Sign from "../components/Sign";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export const router = new Router({
   // mode: 'history',
   routes: [
     {
+      path:'',
+      component:Sign,
+      children:[
+        {
+          path:'',
+          redirect:'login'
+        },
+        {
+          path:'login',
+          component:Login
+        },
+        {
+          path:'register',
+          component:Register
+        }
+      ]
+
+    },
+    {
       path: '/',
-      name: 'Login',
-      component: Login
+      redirect:'/Login'
     },
     {
       path: '/Login',
