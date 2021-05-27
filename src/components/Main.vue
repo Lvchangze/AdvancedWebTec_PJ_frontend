@@ -1,7 +1,7 @@
 <template>
-  <el-container>
+  <el-container class="main-wrapper">
     <el-header>
-      <el-menu :default-active="activeIndex" mode="horizontal">
+      <el-menu mode="horizontal">
         <el-menu-item style="float: left">
           <i class="el-icon-s-home"></i>
           欢迎  {{userId}}
@@ -36,7 +36,6 @@
     name: 'Main',
     data() {
       return {
-        activeIndex: 0,
         userId:"吕昌泽"
 /*
         userId: this.$store.state.currentId
@@ -47,7 +46,6 @@
       logout() {
         this.$store.commit('logout')
         this.$router.push('/login');
-        // this.websocket.close()
       },
       gotoRooms() {
         this.$router.push('/main/rooms')
@@ -63,15 +61,15 @@
   }
 </script>
 <style scoped>
-  .el-container {
+  .main-wrapper {
     height: 100%;
   }
 
-  .el-header {
+  .main-wrapper .el-header {
     height: 5%;
   }
 
-  .el-main {
+  .main-wrapper.el-main {
     height: 100%;
   }
 
