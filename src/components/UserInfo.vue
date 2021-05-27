@@ -6,8 +6,8 @@
       <div id="character_scene"></div>
     </el-aside>
 
-    <!--记录个人信息-->
     <el-main>
+      <!--记录个人信息-->
       <el-form :model="userData"
                label-width="50px">
       <el-form-item label="账号" prop="id">
@@ -37,6 +37,9 @@
           </el-select>
         </el-form-item>
       </el-form>
+
+      <!--记录历史纪录-->
+      <h2>历史记录</h2>
       <el-table
         :data="historyList"
         stripe>
