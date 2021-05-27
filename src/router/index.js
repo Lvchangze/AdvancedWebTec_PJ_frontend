@@ -29,21 +29,6 @@ export const router = new Router({
           component:Register
         }
       ]
-
-    },
-    {
-      path: '/',
-      redirect:'/Login'
-    },
-    {
-      path: '/Login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register,
     },
     {
       path: '/VirtualScene',
