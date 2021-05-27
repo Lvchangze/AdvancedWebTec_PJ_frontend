@@ -6,6 +6,7 @@ import Main from '../components/Main'
 import VirtualScene from "../components/VirtualScene"
 import UserInfo from "../components/UserInfo"
 import Sign from "../components/Sign";
+import Rooms from "../components/Rooms";
 
 Vue.use(Router);
 
@@ -31,25 +32,33 @@ export const router = new Router({
       ]
     },
     {
+      path:'/main',
+      component:Main,
+      /*meta:{
+        requireAuth: true
+      },*/
+      children:[
+        {
+          path: '',
+          redirect: 'rooms'
+        },
+        {
+          path: 'rooms',
+          component: Rooms
+        },
+        {
+          path: 'userInfo',
+          component: UserInfo
+        }
+      ]
+    },
+    {
       path: '/VirtualScene',
       name: 'VirtualScene',
       component: VirtualScene,
-    },
-    {
-      path: '/UserInfo',
-      name: 'UserInfo',
-      component: UserInfo,
-    },
-    {
-      path: '/Main',
-      name: 'Main',
-      component: Main,
-      meta: {
-        requireAuth: true, // 需要登录权限
-      },
-    },
+    }
   ]
-})
+});
 
 // 导航守卫，使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {

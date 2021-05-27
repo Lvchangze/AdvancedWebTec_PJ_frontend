@@ -16,8 +16,8 @@
                   type="password"
                   v-model="loginForm.password"></el-input>
       </el-form-item>
-            <el-button round type="primary" v-on:click="login">登录</el-button>
-            <el-button round v-on:click="to_register">注册</el-button>
+      <el-button round type="primary" v-on:click="login">登录</el-button>
+      <el-button round v-on:click="gotoRegister">注册</el-button>
     </el-form>
   </div>
 </template>
@@ -72,8 +72,8 @@
             }
           );
       },
-      to_register(){
-        this.$router.replace({path:'/register'})
+      gotoRegister() {
+        this.$router.replace({path: '/register'})
       }
     }
   }

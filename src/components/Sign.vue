@@ -26,7 +26,7 @@
           <router-view/>
         </div>
         <footer>
-          Copyright © 2021 泽哥和他的舔狗们小组 版权所有 沪ICP备:83091720-9 沪公网安备31987102320309
+          Copyright © 2021 泽哥和他的底层室友们小组 版权所有 沪ICP备:83091720-9 沪公网安备31987102320309
           <i class="el-icon-paperclip"></i>
         </footer>
       </el-main>
@@ -105,7 +105,7 @@
 </script>
 
 <style scoped>
-  .form_title{
+  .form_title {
     margin-top: 5px;
     text-align: center;
     font-size: 28px;
@@ -113,7 +113,7 @@
     font-weight: bold;
   }
 
-  .sign_form_wrapper{
+  .sign_form_wrapper {
     width: 400px;
     margin: auto;
   }
@@ -128,11 +128,11 @@
     justify-content: center;
   }
 
-  .sign_wrapper{
+  .sign_wrapper {
     height: 100%;
   }
 
-  .el-container{
+  .el-container {
     height: 100%;
   }
 
@@ -141,7 +141,7 @@
     height: 100%;
   }
 
-  footer{
+  footer {
     color: #2d3764;
     margin-bottom: 5px;
     margin-top: 10%;

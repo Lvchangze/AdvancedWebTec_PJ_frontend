@@ -1,24 +1,7 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-table
-        :data="userData"
-        style="width: 100%">
-        <el-table-column
-          label="昵称"
-          prop="id">
-        </el-table-column>
-        <el-table-column
-          label="年龄"
-          prop="age">
-        </el-table-column>
-        <el-table-column
-          label="性别"
-          prop="gender">
-        </el-table-column>
-      </el-table>
-    </el-main>
-  </el-container>
+  <div class="info-wrapper">
+    用户信息
+  </div>
 </template>
 
 <script>
@@ -41,5 +24,7 @@
 </script>
 
 <style scoped>
-
+  .info-wrapper {
+    height: 100%;
+  }
 </style>

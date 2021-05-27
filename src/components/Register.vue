@@ -5,22 +5,23 @@
              v-loading="loading">
       <el-form-item label="账号" prop="id" required>
         <el-input auto-complete="off" placeholder="请输入用户名"
-                   type="text" v-model="registerForm.id"></el-input>
+                  type="text" v-model="registerForm.id"></el-input>
       </el-form-item>
 
-      <el-form-item label="密码"  prop="password" required>
+      <el-form-item label="密码" prop="password" required>
         <el-input auto-complete="off" placeholder="请输入密码"
                   type="password" v-model="registerForm.password"></el-input>
       </el-form-item>
 
-      <el-form-item  label="年龄" prop="age" required>
+      <el-form-item label="年龄" prop="age" required>
         <el-input auto-complete="off" placeholder="请输入年龄"
-                   type="text" v-model="registerForm.age"></el-input>
+                  type="text" v-model="registerForm.age"></el-input>
       </el-form-item>
 
       <el-form-item label="性别" prop="gender" required>
-        <el-select placeholder="请选择性别" v-model="registerForm.gender" >
+        <el-select placeholder="请选择性别" v-model="registerForm.gender">
           <el-option
+            :key="sex.value"
             :label="sex.label"
             :value="sex.value"
             v-for="sex in genders">
@@ -29,8 +30,9 @@
       </el-form-item>
 
       <el-form-item label="形象" prop="character" required>
-        <el-select placeholder="请选择形象" v-model="registerForm.character" >
+        <el-select placeholder="请选择形象" v-model="registerForm.character">
           <el-option
+            :key="character.value"
             :label="character.value"
             :value="character.value"
             v-for="character in characters">
@@ -38,8 +40,8 @@
         </el-select>
       </el-form-item>
 
-        <el-button type="primary" v-on:click="register" round>注册</el-button>
-        <el-button v-on:click="back" round>返回</el-button>
+      <el-button round type="primary" v-on:click="register">注册</el-button>
+      <el-button round v-on:click="back">返回</el-button>
     </el-form>
   </div>
 
@@ -63,7 +65,7 @@
           password: '',
           age: '',
           gender: '',
-          character:''
+          character: ''
         },
         loading: false,
         genders: [
@@ -76,65 +78,65 @@
             label: '女'
           }
         ],
-        characters:[
+        characters: [
           {
-            value:'迪奥娜'
+            value: '迪奥娜'
           },
           {
-            value:'甘雨'
+            value: '甘雨'
           },
           {
-            value:'公子'
+            value: '公子'
           },
           {
-            value:'胡桃'
+            value: '胡桃'
           },
           {
-            value:'可莉'
+            value: '可莉'
           },
           {
-            value:'罗莎莉亚'
+            value: '罗莎莉亚'
           },
           {
-            value:'莫娜'
+            value: '莫娜'
           },
           {
-            value:'凝光'
+            value: '凝光'
           },
           {
-            value:'诺艾尔'
+            value: '诺艾尔'
           },
           {
-            value:'七七'
+            value: '七七'
           },
           {
-            value:'温迪'
+            value: '温迪'
           },
           {
-            value:'香菱'
+            value: '香菱'
           },
           {
-            value:'魈'
+            value: '魈'
           },
           {
-            value:'辛焱'
+            value: '辛焱'
           },
           {
-            value:'行秋'
+            value: '行秋'
           },
           {
-            value:'烟绯'
+            value: '烟绯'
           },
           {
-            value:'钟离'
+            value: '钟离'
           }
         ]
       }
 
     },
     methods: {
-      back(){
-        this.$router.replace({path:'/login'})
+      back() {
+        this.$router.replace({path: '/login'})
       },
       register() {
         console.log(this.registerForm);
@@ -179,7 +181,7 @@
 </script>
 
 <style scoped>
-  .el-select{
+  .el-select {
     width: 100%;
   }
 </style>
