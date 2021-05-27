@@ -63,7 +63,7 @@
             });
             this.$store.commit('changeLogin', resp.data)
             // this.$store.commit('webSocketConnect')
-            this.$router.replace({path: '/Main'})
+            this.$router.replace({path: '/main'})
           }
         })
           .catch(error => {
