@@ -1,48 +1,45 @@
 <template>
   <div class="register_container">
-    <el-form :model="registerForm" :ref="registerForm" :rules="rules" label-position="top"
-             label-width="0px"
-             size="small" style="width: 263px;margin-left: 45px;" v-loading="loading">
-      <div class="register_title" style="color: black;font-size: 32px">注册</div>
-
-      <el-form-item class="form-label" label="用户名" label-width="80px" prop="id">
+    <el-form :model="registerForm" :ref="registerForm" :rules="rules"
+             label-width="50px"
+             v-loading="loading">
+      <el-form-item label="账号" prop="id" required>
         <el-input auto-complete="off" placeholder="请输入用户名"
-                  style="width: 250px" type="text" v-model="registerForm.id"></el-input>
+                   type="text" v-model="registerForm.id"></el-input>
       </el-form-item>
 
-      <el-form-item class="form-label" label="密码" label-width="80px" prop="password">
+      <el-form-item label="密码"  prop="password" required>
         <el-input auto-complete="off" placeholder="请输入密码"
-                  style="width: 250px" type="password" v-model="registerForm.password"></el-input>
+                  type="password" v-model="registerForm.password"></el-input>
       </el-form-item>
 
-      <el-form-item class="form-label" label="年龄" label-width="80px" prop="age">
+      <el-form-item  label="年龄" prop="age" required>
         <el-input auto-complete="off" placeholder="请输入年龄"
-                  style="width: 250px" type="text" v-model="registerForm.age"></el-input>
+                   type="text" v-model="registerForm.age"></el-input>
       </el-form-item>
 
-      <el-form-item class="form-label" label="性别" label-width="80px" prop="gender">
-        <el-select placeholder="请选择性别" style="width: 250px" v-model="registerForm.gender">
+      <el-form-item label="性别" prop="gender" required>
+        <el-select placeholder="请选择性别" v-model="registerForm.gender" >
           <el-option
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            v-for="item in genderOption">
+            :label="sex.label"
+            :value="sex.value"
+            v-for="sex in genders">
           </el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item style="width: 100%;margin-top: 50px;margin-left: -10px">
-        <router-link to="login">
-          <el-button style="width: 100px;background-color: white;border-color:#ddd;border-radius: 3px;margin-right: 11px;color: black"
-                     type="primary"
-          >返回
-          </el-button>
-        </router-link>
-        <el-button style="width: 100px;background-color: #356eff;border-color: #356eff;border-radius: 3px"
-                   type="primary"
-                   v-on:click="register">注册
-        </el-button>
+      <el-form-item label="形象" prop="character" required>
+        <el-select placeholder="请选择形象" v-model="registerForm.character" >
+          <el-option
+            :label="character.value"
+            :value="character.value"
+            v-for="character in characters">
+          </el-option>
+        </el-select>
       </el-form-item>
+
+        <el-button type="primary" v-on:click="register" round>注册</el-button>
+        <el-button v-on:click="back" round>返回</el-button>
     </el-form>
   </div>
 
@@ -59,15 +56,17 @@
           password: [{required: true, message: '密码不得为空', trigger: 'blur'}],
           age: [{required: true, message: '年龄不得为空', trigger: 'blur'}],
           gender: [{required: true, message: '性别不得为空', trigger: 'blur'}],
+          character: [{required: true, message: '形象不得为空', trigger: 'blur'}],
         },
         registerForm: {
           id: '',
           password: '',
           age: '',
           gender: '',
+          character:''
         },
         loading: false,
-        genderOption: [
+        genders: [
           {
             value: 0,
             label: '男'
@@ -75,19 +74,76 @@
           {
             value: 1,
             label: '女'
+          }
+        ],
+        characters:[
+          {
+            value:'迪奥娜'
           },
+          {
+            value:'甘雨'
+          },
+          {
+            value:'公子'
+          },
+          {
+            value:'胡桃'
+          },
+          {
+            value:'可莉'
+          },
+          {
+            value:'罗莎莉亚'
+          },
+          {
+            value:'莫娜'
+          },
+          {
+            value:'凝光'
+          },
+          {
+            value:'诺艾尔'
+          },
+          {
+            value:'七七'
+          },
+          {
+            value:'温迪'
+          },
+          {
+            value:'香菱'
+          },
+          {
+            value:'魈'
+          },
+          {
+            value:'辛焱'
+          },
+          {
+            value:'行秋'
+          },
+          {
+            value:'烟绯'
+          },
+          {
+            value:'钟离'
+          }
         ]
       }
 
     },
     methods: {
+      back(){
+        this.$router.replace({path:'/login'})
+      },
       register() {
-        console.log(this.registerForm)
+        console.log(this.registerForm);
         if (
           this.registerForm.id === "" ||
           this.registerForm.password === "" ||
           this.registerForm.age === "" ||
-          this.registerForm.gender === "") {
+          this.registerForm.gender === "" ||
+          this.registerForm.character === "") {
           this.$message.error('任何一项不得为空');
           return;
         }
@@ -97,6 +153,7 @@
         registerFormData.append("password", this.registerForm.password);
         registerFormData.append("age", this.registerForm.age);
         registerFormData.append("gender", this.registerForm.gender);
+        registerFormData.append("character", this.registerForm.character);
 
         this.$axios.post('/register',
           registerFormData
@@ -122,42 +179,7 @@
 </script>
 
 <style scoped>
-  .register_container {
-    /*
-      border-radius: 3px;
-    */
-    background-clip: padding-box;
-    margin-top: 10%;
-    margin-left: 25%;
-    /*width: 330px;
-    height: 480px;
-    top: 50%;
-    position: relative;
-    margin: -250px auto;
-    padding: 25px 35px 15px 35px;
-    background: #fff;
-    border: 1px solid #eaeaea;*/
-  }
-
-  .register_title {
-    margin: 0 auto 20px auto;
-    text-align: center;
-    color: #494e8f;
-    font-size: 27px;
-  }
-
-  .form-label {
-    text-align: left;
-  }
-
-  .register_container .form-label .el-form-item__label {
-    padding-bottom: 8px;
-    color: #888888;
-    font-size: 12px;
-    line-height: 1.5;
-  }
-
-  .register_container .form-label .el-input__inner {
-    height: 30px;
+  .el-select{
+    width: 100%;
   }
 </style>

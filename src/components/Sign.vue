@@ -8,9 +8,27 @@
 
       <!--登录和注册组件-->
       <el-main>
-        <div>
+        <div class="sign_form_wrapper">
+          <el-row>
+            <el-col :span="8">
+              <div>
+                <img
+                  src="../assets/cas_logo.png"
+                  style="width: 50px;height: 50px"/>
+              </div>
+            </el-col>
+            <el-col :span="16">
+              <div class="form_title">统一身份认证</div>
+            </el-col>
+          </el-row>
+          <hr>
+          <br>
           <router-view/>
         </div>
+        <footer>
+          Copyright © 2021 泽哥和他的舔狗们小组 版权所有 沪ICP备:83091720-9 沪公网安备31987102320309
+          <i class="el-icon-paperclip"></i>
+        </footer>
       </el-main>
     </el-container>
 
@@ -87,25 +105,46 @@
 </script>
 
 <style scoped>
-  .el-aside {
-    position: absolute;
-    height: 100%;
+  .form_title{
+    margin-top: 5px;
+    text-align: center;
+    font-size: 28px;
+    color: #3d35ff;
+    font-weight: bold;
   }
+
+  .sign_form_wrapper{
+    width: 400px;
+    margin: auto;
+  }
+
 
   .el-main {
-    position: absolute;
-    left: 40%;
-    width: 60%;
-    height: 100%;
+    padding: 0;
     background-color: #E9EEF3;
     text-align: center;
-    line-height: 160px;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
+  .sign_wrapper{
+    height: 100%;
+  }
+
+  .el-container{
+    height: 100%;
+  }
 
   #sign_scene {
     width: 100%;
     height: 100%;
   }
+
+  footer{
+    color: #2d3764;
+    margin-bottom: 5px;
+    margin-top: 10%;
+  }
+
 </style>
