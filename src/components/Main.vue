@@ -36,10 +36,7 @@
     name: 'Main',
     data() {
       return {
-        userId:"吕昌泽"
-/*
         userId: this.$store.state.currentId
-*/
       }
     },
     methods: {
