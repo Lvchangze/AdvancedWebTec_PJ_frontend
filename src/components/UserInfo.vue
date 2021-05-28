@@ -45,13 +45,23 @@
         :data="historyList"
         stripe>
         <el-table-column
-          label="编号"
-          prop="id"
+          label="房间"
+          prop="roomId"
+          width="120px">
+        </el-table-column>
+        <el-table-column
+          label="类型"
+          prop="type"
           width="180">
         </el-table-column>
         <el-table-column
+          label="时间"
+          prop="time"
+          width="180px">
+        </el-table-column>
+        <el-table-column
           label="描述"
-          prop="desc">
+          prop="message">
         </el-table-column>
       </el-table>
     </el-main>
@@ -143,8 +153,11 @@
         ],
         historyList:[
           {
-            id:1,
-            desc:'1'
+            userId:"lvchangze",
+            type:"SPEAK",
+            message:"test",
+            time:"test",
+            roomId:1
           }
         ]
       }
@@ -184,12 +197,45 @@
       render() {
         requestAnimationFrame(this.render);
         this.renderer.render(this.scene, this.camera);
+      },
+      fetchUserInfo(){
+        let formData = new FormData();
+        formData.append("id",this.userId);
+        this.$axios.post('/getUserInfo',formData)
+          .then(resp=>{
+            if (resp.status===200){
+              this.userData = resp.data;
+            }
+            else {
+              this.$message.error("获取用户信息失败！")
+            }
+          })
+          .catch(err=>{
+            this.$message.error(err)
+          })
+      },
+      fetchHistoryList(){
+        let formData = new FormData();
+        formData.append("id",this.userId);
+        this.$axios.post('/getUserHistory',formData)
+          .then(resp=>{
+            if (resp.status===200){
+              this.historyList = resp.data;
+            }
+            else {
+              this.$message.error("获取历史记录失败！")
+            }
+          })
+          .catch(err=>{
+            this.$message.error(err)
+          })
       }
     },
     mounted() {
       this.initScene();
       this.render();
-    }
+    },
+
   }
 </script>
 
