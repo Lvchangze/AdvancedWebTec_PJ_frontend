@@ -27,13 +27,13 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="形象" prop="character">
-          <el-select v-model="userData.character" disabled>
+        <el-form-item label="形象" prop="role">
+          <el-select v-model="userData.role" disabled>
             <el-option
-              :key="character.value"
-              :label="character.value"
-              :value="character.value"
-              v-for="character in characters">
+              :key="role.value"
+              :label="role.value"
+              :value="role.value"
+              v-for="role in roles">
             </el-option>
           </el-select>
         </el-form-item>
@@ -83,10 +83,10 @@
         userId: this.$store.state.currentId,
         userData:
           {
-            id: "lvchangze",
-            age: 22,
-            gender: 1,
-            character:'刻晴'
+            id: null,
+            age: null,
+            gender: null,
+            role:null
           },
         genders: [
           {
@@ -98,7 +98,7 @@
             label: '女'
           }
         ],
-        characters: [
+        roles: [
           {
             value: '迪奥娜'
           },
@@ -153,7 +153,7 @@
         ],
         historyList:[
           {
-            userId:"lvchangze",
+            user_id:"lvchangze",
             type:"SPEAK",
             message:"test",
             time:"test",
@@ -186,7 +186,7 @@
 
         let that = this;
         let loader = new MMDLoader();
-        let modelUrl = 'static/models/'+ this.userData.character + '/' + this.userData.character + '.pmx';
+        let modelUrl = 'static/models/'+ this.userData.role + '/' + this.userData.role + '.pmx';
         loader.load(modelUrl, function (mesh) {
           that.model = mesh;
           mesh.scale.multiplyScalar(10);
@@ -200,11 +200,13 @@
       },
       fetchUserInfo(){
         let formData = new FormData();
-        formData.append("id",this.userId);
+        formData.append("userId",this.userId);
         this.$axios.post('/getUserInfo',formData)
           .then(resp=>{
             if (resp.status===200){
-              this.userData = resp.data;
+              this.userData = resp.data.user;
+              this.initScene();
+              this.render();
             }
             else {
               this.$message.error("获取用户信息失败！")
@@ -216,11 +218,12 @@
       },
       fetchHistoryList(){
         let formData = new FormData();
-        formData.append("id",this.userId);
+        formData.append("userId",this.userId);
         this.$axios.post('/getUserHistory',formData)
           .then(resp=>{
             if (resp.status===200){
-              this.historyList = resp.data;
+              console.log(resp.data.list)
+              this.historyList = resp.data.list;
             }
             else {
               this.$message.error("获取历史记录失败！")
@@ -232,8 +235,8 @@
       }
     },
     mounted() {
-      this.initScene();
-      this.render();
+      this.fetchUserInfo();
+      this.fetchHistoryList();
     },
 
   }

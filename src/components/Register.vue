@@ -29,13 +29,13 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="形象" prop="character" required>
-        <el-select placeholder="请选择形象" v-model="registerForm.character">
+      <el-form-item label="形象" prop="role" required>
+        <el-select placeholder="请选择形象" v-model="registerForm.role">
           <el-option
-            :key="character.value"
-            :label="character.value"
-            :value="character.value"
-            v-for="character in characters">
+            :key="role.value"
+            :label="role.value"
+            :value="role.value"
+            v-for="role in roles">
           </el-option>
         </el-select>
       </el-form-item>
@@ -58,14 +58,14 @@
           password: [{required: true, message: '密码不得为空', trigger: 'blur'}],
           age: [{required: true, message: '年龄不得为空', trigger: 'blur'}],
           gender: [{required: true, message: '性别不得为空', trigger: 'blur'}],
-          character: [{required: true, message: '形象不得为空', trigger: 'blur'}],
+          role: [{required: true, message: '形象不得为空', trigger: 'blur'}],
         },
         registerForm: {
           id: '',
           password: '',
           age: '',
           gender: '',
-          character: ''
+          role: ''
         },
         loading: false,
         genders: [
@@ -78,7 +78,7 @@
             label: '女'
           }
         ],
-        characters: [
+        roles: [
           {
             value: '迪奥娜'
           },
@@ -145,7 +145,7 @@
           this.registerForm.password === "" ||
           this.registerForm.age === "" ||
           this.registerForm.gender === "" ||
-          this.registerForm.character === "") {
+          this.registerForm.role === "") {
           this.$message.error('任何一项不得为空');
           return;
         }
@@ -155,13 +155,12 @@
         registerFormData.append("password", this.registerForm.password);
         registerFormData.append("age", this.registerForm.age);
         registerFormData.append("gender", this.registerForm.gender);
-        registerFormData.append("character", this.registerForm.character);
+        registerFormData.append("role", this.registerForm.role);
 
         this.$axios.post('/register',
           registerFormData
         )
           .then(resp => {
-            console.log(resp)
             if (resp.status === 200) {
               this.$message({
                 message: '注册成功',
