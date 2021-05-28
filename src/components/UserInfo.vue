@@ -8,6 +8,7 @@
 
     <el-main>
       <!--记录个人信息-->
+      <h2>个人信息</h2>
       <el-form :model="userData"
                label-width="50px">
       <el-form-item label="账号" prop="id">
@@ -207,6 +208,11 @@
 
   .el-select{
     width: 100%;
+  }
+
+  .el-form-item{
+    display: inline-block;
+    width: 23%;
   }
 
 </style>
