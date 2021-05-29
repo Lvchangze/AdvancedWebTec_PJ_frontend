@@ -151,15 +151,7 @@
             value: '钟离'
           }
         ],
-        historyList:[
-          {
-            user_id:"lvchangze",
-            type:"SPEAK",
-            message:"test",
-            time:"test",
-            roomId:1
-          }
-        ]
+        historyList:[]
       }
     },
     methods:{
@@ -222,7 +214,6 @@
         this.$axios.post('/getUserHistory',formData)
           .then(resp=>{
             if (resp.status===200){
-              console.log(resp.data.list)
               this.historyList = resp.data.list;
             }
             else {

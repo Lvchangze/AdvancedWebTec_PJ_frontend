@@ -10,7 +10,7 @@
       </el-table-column>
       <el-table-column
         label="描述"
-        prop="desc"
+        prop="description"
         width="600">
       </el-table-column>
       <el-table-column
@@ -38,30 +38,31 @@
     name: "Rooms",
     data() {
       return {
-        roomList: [{
-          id: 1,
-          name: '汉诺塔初级',
-          desc: '在这个房间中，用户可以进行 3 层汉诺塔的相关教学实验',
-          count: 0
-         },
-          {
-            id: 2,
-            name: '汉诺塔中级',
-            desc: '在这个房间中，用户可以进行 4 层汉诺塔的相关教学实验',
-            count: 0
-          },
-          {
-            id: 3,
-            name: '汉诺塔高级',
-            desc: '在这个房间中，用户可以进行 5 层汉诺塔的相关教学实验',
-            count: 0
-          }]
+        roomList: []
       }
     },
     methods: {
       goInto(index) {
-        this.$message.success("进入" + this.roomList[index].id + "房间");
+        this.$message.success("进入" + this.roomList[index].roomId + "房间");
+      },
+      fetchRoomList(){
+        this.$axios.post('/getAllRooms',"")
+          .then(resp=>{
+            if (resp.status===200){
+              console.log(resp.data)
+              this.roomList = resp.data.rooms;
+            }
+            else {
+              this.$message.error("获取历史记录失败！")
+            }
+          })
+          .catch(err=>{
+            this.$message.error(err)
+          })
       }
+    },
+    mounted() {
+      this.fetchRoomList();
     }
   }
 </script>

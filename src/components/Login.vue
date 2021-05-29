@@ -57,7 +57,7 @@
           console.log(resp);
           if (resp.status === 200) {
             this.$message({
-              message: '登陆成功',
+              message: '登录成功',
               type: 'success',
               duration: 1000
             });
