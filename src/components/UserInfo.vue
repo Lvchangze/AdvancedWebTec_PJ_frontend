@@ -11,8 +11,8 @@
       <h2>个人信息</h2>
       <el-form :model="userData"
                label-width="50px">
-      <el-form-item label="账号" prop="id">
-          <el-input v-model="userData.id" disabled></el-input>
+      <el-form-item label="账号" prop="userId">
+          <el-input v-model="userData.userId" disabled></el-input>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
           <el-input auto-complete="off" v-model="userData.age" disabled></el-input>
@@ -83,7 +83,7 @@
         userId: this.$store.state.currentId,
         userData:
           {
-            id: null,
+            userId: null,
             age: null,
             gender: null,
             role:null

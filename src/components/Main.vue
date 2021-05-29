@@ -7,17 +7,17 @@
           欢迎  {{userId}}
         </el-menu-item>
 
-        <el-menu-item index="3">
+        <el-menu-item index="3" @click="logout">
           <i class="el-icon-error"></i>
-          <a @click="logout">退出登录</a>
+          退出登录
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2" @click="gotoUserInfo">
           <i class="el-icon-user-solid"></i>
-          <a @click="gotoUserInfo">个人信息</a>
+          个人信息
         </el-menu-item>
-        <el-menu-item index="1">
+        <el-menu-item index="1" @click="gotoRooms">
           <i class="el-icon-menu"></i>
-          <a @click="gotoRooms">房间列表</a>
+          房间列表
         </el-menu-item>
       </el-menu>
     </el-header>
@@ -73,7 +73,6 @@
   .el-menu-item {
     float: right;
   }
-
 
 </style>
 
