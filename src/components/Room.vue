@@ -78,7 +78,7 @@
         this.chatList.push(
           {
             userId: userId,
-            message: message
+            msg: message
           }
         )
       }

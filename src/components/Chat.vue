@@ -1,7 +1,7 @@
 <template>
   <div class="chat-wrapper">
     <div class="chat-box">
-      <div :key="message" v-for="message in chatList">
+      <div v-for="message in chatList">
 
         <!--发言者为此时用户-->
         <div v-if="message.userId==userId">
