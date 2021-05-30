@@ -41,11 +41,14 @@
     </div>
     <div class="input-box">
       <el-row>
-        <el-col :span="18">
+        <el-col :span="14">
           <el-input v-model="msg"></el-input>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-button @click="sendMessage" round type="success">发送</el-button>
+        </el-col>
+        <el-col :span="5">
+          <el-button @click="back" round type="primary">退出</el-button>
         </el-col>
       </el-row>
     </div>
@@ -64,6 +67,10 @@
       }
     },
     methods: {
+      back(){
+        this.ws.close();
+        this.$router.replace({path:"/main"})
+      },
       sendMessage() {
         let that = this;
         if (this.msg === "") {

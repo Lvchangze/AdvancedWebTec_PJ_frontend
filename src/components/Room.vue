@@ -22,56 +22,7 @@
       return {
         webSocket: null,
         userId: this.$store.state.currentId,
-        chatList: [
-          {
-            userId: "test",
-            msg: "1"
-          },
-          {
-            userId: "test1",
-            msg: "1"
-          },
-          {
-            userId: "test",
-            msg: "1"
-          },
-          {
-            userId: "test1",
-            msg: "1"
-          },
-          {
-            userId: "test",
-            msg: "1"
-          },
-          {
-            userId: "test1",
-            msg: "1"
-          },
-          {
-            userId: "test",
-            msg: "1"
-          },
-          {
-            userId: "test1",
-            msg: "1"
-          },
-          {
-            userId: "test",
-            msg: "1"
-          },
-          {
-            userId: "test1",
-            msg: "1"
-          },
-          {
-            userId: "test",
-            msg: "1"
-          },
-          {
-            userId: "test1",
-            msg: "1"
-          },
-        ],
+        chatList: [],
         positionList: []
       }
     },
