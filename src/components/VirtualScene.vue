@@ -252,7 +252,7 @@
     },
     mounted() {
       this.init();
-      this.initWebSocketChat()
+      this.initWebSocketChat();
       this.sendMessage()
     },
   }

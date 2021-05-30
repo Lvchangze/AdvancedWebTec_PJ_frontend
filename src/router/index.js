@@ -6,7 +6,8 @@ import Main from '../components/Main'
 import VirtualScene from "../components/VirtualScene"
 import UserInfo from "../components/UserInfo"
 import Sign from "../components/Sign";
-import Rooms from "../components/Rooms";
+import RoomList from "../components/RoomList";
+import Room from "../components/Room";
 
 Vue.use(Router);
 
@@ -44,13 +45,18 @@ export const router = new Router({
         },
         {
           path: 'rooms',
-          component: Rooms
+          component: RoomList
         },
         {
           path: 'userInfo',
           component: UserInfo
         }
       ]
+    },
+    {
+      path:'/room/:roomId',
+      component:Room,
+      props:true
     },
     {
       path: '/VirtualScene',

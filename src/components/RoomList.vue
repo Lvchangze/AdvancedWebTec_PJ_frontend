@@ -35,7 +35,7 @@
 
 <script>
   export default {
-    name: "Rooms",
+    name: "RoomList",
     data() {
       return {
         roomList: []
@@ -44,19 +44,19 @@
     methods: {
       goInto(index) {
         this.$message.success("进入" + this.roomList[index].roomId + "房间");
+        this.$router.push({path: '/room/' + this.roomList[index].roomId});
       },
-      fetchRoomList(){
-        this.$axios.post('/getAllRooms',"")
-          .then(resp=>{
-            if (resp.status===200){
+      fetchRoomList() {
+        this.$axios.post('/getAllRooms', "")
+          .then(resp => {
+            if (resp.status === 200) {
               console.log(resp.data)
               this.roomList = resp.data.rooms;
-            }
-            else {
+            } else {
               this.$message.error("获取历史记录失败！")
             }
           })
-          .catch(err=>{
+          .catch(err => {
             this.$message.error(err)
           })
       }

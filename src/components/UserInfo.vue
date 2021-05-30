@@ -11,14 +11,14 @@
       <h2>个人信息</h2>
       <el-form :model="userData"
                label-width="50px">
-      <el-form-item label="账号" prop="userId">
-          <el-input v-model="userData.userId" disabled></el-input>
+        <el-form-item label="账号" prop="userId">
+          <el-input disabled v-model="userData.userId"></el-input>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
-          <el-input auto-complete="off" v-model="userData.age" disabled></el-input>
+          <el-input auto-complete="off" disabled v-model="userData.age"></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="gender">
-          <el-select v-model="userData.gender" disabled>
+          <el-select disabled v-model="userData.gender">
             <el-option
               :key="sex.value"
               :label="sex.label"
@@ -28,7 +28,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="形象" prop="role">
-          <el-select v-model="userData.role" disabled>
+          <el-select disabled v-model="userData.role">
             <el-option
               :key="role.value"
               :label="role.value"
@@ -86,7 +86,7 @@
             userId: null,
             age: null,
             gender: null,
-            role:null
+            role: null
           },
         genders: [
           {
@@ -151,10 +151,10 @@
             value: '钟离'
           }
         ],
-        historyList:[]
+        historyList: []
       }
     },
-    methods:{
+    methods: {
       initScene() {
         let container = document.getElementById('character_scene');
         this.scene = new Three.Scene();
@@ -178,7 +178,7 @@
 
         let that = this;
         let loader = new MMDLoader();
-        let modelUrl = 'static/models/'+ this.userData.role + '/' + this.userData.role + '.pmx';
+        let modelUrl = 'static/models/' + this.userData.role + '/' + this.userData.role + '.pmx';
         loader.load(modelUrl, function (mesh) {
           that.model = mesh;
           mesh.scale.multiplyScalar(10);
@@ -190,37 +190,35 @@
         requestAnimationFrame(this.render);
         this.renderer.render(this.scene, this.camera);
       },
-      fetchUserInfo(){
+      fetchUserInfo() {
         let formData = new FormData();
-        formData.append("userId",this.userId);
-        this.$axios.post('/getUserInfo',formData)
-          .then(resp=>{
-            if (resp.status===200){
+        formData.append("userId", this.userId);
+        this.$axios.post('/getUserInfo', formData)
+          .then(resp => {
+            if (resp.status === 200) {
               this.userData = resp.data.user;
               this.initScene();
               this.render();
-            }
-            else {
+            } else {
               this.$message.error("获取用户信息失败！")
             }
           })
-          .catch(err=>{
+          .catch(err => {
             this.$message.error(err)
           })
       },
-      fetchHistoryList(){
+      fetchHistoryList() {
         let formData = new FormData();
-        formData.append("userId",this.userId);
-        this.$axios.post('/getUserHistory',formData)
-          .then(resp=>{
-            if (resp.status===200){
+        formData.append("userId", this.userId);
+        this.$axios.post('/getUserHistory', formData)
+          .then(resp => {
+            if (resp.status === 200) {
               this.historyList = resp.data.list;
-            }
-            else {
+            } else {
               this.$message.error("获取历史记录失败！")
             }
           })
-          .catch(err=>{
+          .catch(err => {
             this.$message.error(err)
           })
       }
@@ -238,19 +236,19 @@
     height: 100%;
   }
 
-  .info-wrapper .el-aside{
+  .info-wrapper .el-aside {
     height: 100%;
   }
 
-  #character_scene{
+  #character_scene {
     height: 100%;
   }
 
-  .el-select{
+  .el-select {
     width: 100%;
   }
 
-  .el-form-item{
+  .el-form-item {
     display: inline-block;
     width: 23%;
   }

@@ -4,18 +4,18 @@
       <el-menu mode="horizontal">
         <el-menu-item style="float: left">
           <i class="el-icon-s-home"></i>
-          欢迎  {{userId}}
+          欢迎 {{userId}}
         </el-menu-item>
 
-        <el-menu-item index="3" @click="logout">
+        <el-menu-item @click="logout" index="3">
           <i class="el-icon-error"></i>
           退出登录
         </el-menu-item>
-        <el-menu-item index="2" @click="gotoUserInfo">
+        <el-menu-item @click="gotoUserInfo" index="2">
           <i class="el-icon-user-solid"></i>
           个人信息
         </el-menu-item>
-        <el-menu-item index="1" @click="gotoRooms">
+        <el-menu-item @click="gotoRooms" index="1">
           <i class="el-icon-menu"></i>
           房间列表
         </el-menu-item>
