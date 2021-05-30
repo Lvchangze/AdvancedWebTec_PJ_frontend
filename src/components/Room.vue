@@ -4,18 +4,20 @@
       <Chat :chat-list="chatList" :ws="webSocket"/>
     </el-aside>
     <el-main class="scene-block">
-      main
+      <hanoi-tower ref="virtualScene" v-if="roomId < 4" :ws="webSocket" />
     </el-main>
   </el-container>
 </template>
 
 <script>
   import Chat from "./Chat";
+  import HanoiTower from "./HanoiTower";
 
   export default {
     name: "Room",
     components: {
-      Chat
+      Chat,
+      HanoiTower
     },
     props: ['roomId'],
     data() {
@@ -23,7 +25,6 @@
         webSocket: null,
         userId: this.$store.state.currentId,
         chatList: [],
-        positionList: []
       }
     },
     methods: {
@@ -43,13 +44,22 @@
           console.log(message);
           switch (message.type) {
             case "ENTER":
-              that.handleEnter(message.userId);
+              that.handleEnter(message.userId,message.msg);
               break;
             case "QUIT" :
               that.handleQuit(message.userId);
               break;
             case "SPEAK":
               that.handleSpeak(message.userId, message.msg);
+              break;
+            case "MOVE":
+              that.$refs.virtualScene.handleMove(message.userId,message.msg);
+              break;
+            case "LIFT":
+              that.$refs.virtualScene.handleLift(message.userId, message.msg);
+              break;
+            case "DROP":
+              that.$refs.virtualScene.handleDrop(message.userId, message.msg)
               break;
             default:
               break;
@@ -68,10 +78,12 @@
           this.webSocket.close()
         };
       },
-      handleEnter(userId) {
+      handleEnter(userId,role) {
+        this.$refs.virtualScene.handleEnter(userId,role);
         this.$message.info(userId + "进入房间！");
       },
       handleQuit(userId) {
+        this.$refs.virtualScene.handleQuit(userId,role);
         this.$message.info(userId + "退出房间！");
       },
       handleSpeak(userId, message) {
@@ -81,7 +93,7 @@
             msg: message
           }
         )
-      }
+      },
     },
     mounted() {
       this.initWebSocket();

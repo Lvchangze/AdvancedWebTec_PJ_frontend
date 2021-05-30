@@ -63,13 +63,13 @@
     data() {
       return {
         userId: this.$store.state.currentId,
-        msg:""
+        msg: ""
       }
     },
     methods: {
-      back(){
+      back() {
         this.ws.close();
-        this.$router.replace({path:"/main"})
+        this.$router.replace({path: "/main"})
       },
       sendMessage() {
         let that = this;
