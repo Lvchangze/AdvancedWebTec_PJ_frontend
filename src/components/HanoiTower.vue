@@ -160,11 +160,12 @@
         document.addEventListener('keyup', onKeyUp, false);
       },
       handleRole(userId,role){
-        if (this.players.has(userId)) return;
+        if (this.players.containsKey(userId)) return;
         let that = this;
         let loader = new MMDLoader();
         let modelUrl = 'static/models/' + role + '/' + role + '.pmx';
         loader.load(modelUrl, function (mesh) {
+          if (that.players.containsKey(userId)) return;
           that.players.set(userId,mesh);
           mesh.scale.multiplyScalar(7);
           mesh.position.set(0, 0, -170);
