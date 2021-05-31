@@ -83,11 +83,10 @@
         };
       },
       handleEnter(userId,role) {
-        this.$refs.virtualScene.handleRole(userId,role);
         this.$message.info(userId + "进入房间！");
       },
       handleQuit(userId) {
-        this.$refs.virtualScene.handleQuit(userId,role);
+        this.$refs.virtualScene.handleQuit(userId);
         this.$message.info(userId + "退出房间！");
       },
       handleSpeak(userId, message) {
