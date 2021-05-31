@@ -1,10 +1,11 @@
 <template>
   <el-container class="room-wrapper">
     <el-aside class="chat-block" width="30%">
-      <Chat :chat-list="chatList" :ws="webSocket"/>
+      <Chat :chat-list="chatList" :ws="webSocket" :move-lock="moveLock"/>
     </el-aside>
     <el-main class="scene-block">
-      <hanoi-tower ref="virtualScene" v-if="roomId < 4" :ws="webSocket" :disk-count="diskCount"/>
+      <hanoi-tower ref="virtualScene" v-if="roomId < 4"
+                   :ws="webSocket" :disk-count="diskCount" :move-lock="moveLock"/>
     </el-main>
   </el-container>
 </template>
@@ -25,7 +26,8 @@
         webSocket: null,
         userId: this.$store.state.currentId,
         chatList: [],
-        diskCount:0
+        diskCount:0,
+        moveLock:false
       }
     },
     methods: {

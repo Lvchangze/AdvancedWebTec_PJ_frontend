@@ -42,7 +42,7 @@
     <div class="input-box">
       <el-row>
         <el-col :span="14">
-          <el-input v-model="msg"></el-input>
+          <el-input v-model="msg" @focus="moveLock = false" @blur="moveLock = true"></el-input>
         </el-col>
         <el-col :span="5">
           <el-button @click="sendMessage" round type="success">发送</el-button>
@@ -59,7 +59,7 @@
 <script>
   export default {
     name: "Chat",
-    props: ['ws', 'chatList'],
+    props: ['ws', 'chatList','moveLock'],
     data() {
       return {
         userId: this.$store.state.currentId,

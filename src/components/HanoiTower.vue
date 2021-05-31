@@ -11,7 +11,7 @@
 
   export default {
     name: "HanoiTower",
-    props:["ws","diskCount"],
+    props:["ws","diskCount","moveLock"],
     data() {
       return {
         players:null,
@@ -99,6 +99,7 @@
         this.renderer.render(this.scene, this.camera);
         //this.renderer.shadowMap.enabled = true;
         if (!this.players.has(this.userId)) return;
+        if (this.moveLock) return;
 
         if (this.moveForward) {
           this.players.get(this.userId).position.z += 5;
@@ -156,8 +157,8 @@
           }
         };
 
-        document.addEventListener('keydown', onKeyDown, false);
-        document.addEventListener('keyup', onKeyUp, false);
+        this.container.addEventListener('keydown', onKeyDown, false);
+        this.container.addEventListener('keyup', onKeyUp, false);
       },
       handleRole(userId,role){
         let that = this;
