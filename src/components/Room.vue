@@ -47,14 +47,17 @@
             case "ENTER":
               that.handleEnter(message.userId,message.msg);
               break;
+            case "ROLE":
+              that.$refs.virtualScene.handleRole(message.userId,message.msg);
+              break;
             case "QUIT" :
               that.handleQuit(message.userId);
               break;
             case "SPEAK":
               that.handleSpeak(message.userId, message.msg);
               break;
-            case "MOVE":
-              that.$refs.virtualScene.handleMove(message.userId,message.msg);
+            case "POSITION":
+              that.$refs.virtualScene.handlePosition(message.userId,message.msg);
               break;
             case "LIFT":
               that.$refs.virtualScene.handleLift(message.userId, message.msg);
@@ -80,7 +83,7 @@
         };
       },
       handleEnter(userId,role) {
-        this.$refs.virtualScene.handleEnter(userId,role);
+        this.$refs.virtualScene.handleRole(message.userId,message.msg);
         this.$message.info(userId + "进入房间！");
       },
       handleQuit(userId) {

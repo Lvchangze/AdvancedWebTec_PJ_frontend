@@ -54,7 +54,7 @@
       },
       initWebGLRender() {
         this.renderer = new Three.WebGLRenderer({antialias: true});
-        this.renderer.setSize(container.clientWidth, container.clientHeight);
+        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.container.appendChild(this.renderer.domElement);
       },
       initLight() {
@@ -159,7 +159,8 @@
         document.addEventListener('keydown', onKeyDown, false);
         document.addEventListener('keyup', onKeyUp, false);
       },
-      handleEnter(userId,role){
+      handleRole(userId,role){
+        if (this.players.has(userId)) return;
         let that = this;
         let loader = new MMDLoader();
         let modelUrl = 'static/models/' + role + '/' + role + '.pmx';
@@ -179,7 +180,7 @@
       handleDrop(userId, msg) {
 
       },
-      handleMove(userId,position){
+      handlePosition(userId,position){
         if (userId===this.userId) return;
         let jsonPosition = JSON.parse(position)
         this.players.get(userId).position.set(jsonPosition.x,jsonPosition.y,jsonPosition.z);
