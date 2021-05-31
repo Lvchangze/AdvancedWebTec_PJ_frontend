@@ -4,7 +4,7 @@
       <Chat :chat-list="chatList" :ws="webSocket"/>
     </el-aside>
     <el-main class="scene-block">
-      <hanoi-tower ref="virtualScene" v-if="roomId < 4" :ws="webSocket" />
+      <hanoi-tower ref="virtualScene" v-if="roomId < 4" :ws="webSocket" :disk-count="diskCount"/>
     </el-main>
   </el-container>
 </template>
@@ -25,6 +25,7 @@
         webSocket: null,
         userId: this.$store.state.currentId,
         chatList: [],
+        diskCount:0
       }
     },
     methods: {
@@ -96,6 +97,7 @@
       },
     },
     mounted() {
+      this.diskCount = Number(this.roomId) + 2;
       this.initWebSocket();
     }
   }

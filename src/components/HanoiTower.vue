@@ -11,7 +11,7 @@
 
   export default {
     name: "HanoiTower",
-    props:["ws"],
+    props:["ws","diskCount"],
     data() {
       return {
         players:null,
@@ -25,7 +25,8 @@
         moveLeft: false,
         moveBackward: false,
         moveRight: false,
-        userId: this.$store.state.currentId
+        userId: this.$store.state.currentId,
+        disks:[]
       }
     },
     methods: {
@@ -179,6 +180,7 @@
 
       },
       handleMove(userId,position){
+        if (userId===this.userId) return;
         let jsonPosition = JSON.parse(position)
         this.players.get(userId).position.set(jsonPosition.x,jsonPosition.y,jsonPosition.z);
       },
@@ -230,6 +232,14 @@
       }
     },
     mounted() {
+      let stick1 = [];
+      for (let i = this.diskCount; i > 0; i++) {
+        stick1.push(i);
+      }
+      this.disks.push(stick1);
+      this.disks.push([]);
+      this.disks.push([]);
+
       this.players = new Map();
       this.init();
     }
