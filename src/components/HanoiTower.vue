@@ -11,7 +11,7 @@
 
   export default {
     name: "HanoiTower",
-    props:["ws","diskCount"],
+    props:["ws","diskCount","moveLock"],
     data() {
       return {
         players:null,
@@ -26,7 +26,7 @@
         moveBackward: false,
         moveRight: false,
         userId: this.$store.state.currentId,
-        disks:[]
+        disks:[],
       }
     },
     methods: {
@@ -99,6 +99,7 @@
         this.renderer.render(this.scene, this.camera);
         //this.renderer.shadowMap.enabled = true;
         if (!this.players.has(this.userId)) return;
+        if (that.moveLock) return;
 
         if (this.moveForward) {
           this.players.get(this.userId).position.z += 5;
@@ -124,6 +125,7 @@
       initMobile() {
         let that = this;
         let onKeyDown = function (e) {
+          console.log(that.moveLock);
           switch (e.key) {
             case 'a':
               that.moveLeft = true;
@@ -158,6 +160,7 @@
 
         document.addEventListener('keydown', onKeyDown, false);
         document.addEventListener('keyup', onKeyUp, false);
+
       },
       handleRole(userId,role){
         let that = this;

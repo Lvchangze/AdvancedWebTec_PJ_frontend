@@ -42,7 +42,7 @@
     <div class="input-box">
       <el-row>
         <el-col :span="14">
-          <el-input v-model="msg"></el-input>
+          <el-input v-model="msg" @focus="emitFocus" @blur="emitBlur"></el-input>
         </el-col>
         <el-col :span="5">
           <el-button @click="sendMessage" round type="success">发送</el-button>
@@ -67,6 +67,12 @@
       }
     },
     methods: {
+      emitFocus(){
+        this.$emit('lock',true)
+      },
+      emitBlur(){
+        this.$emit('lock',false)
+      },
       back() {
         this.ws.close();
         this.$router.replace({path: "/main"})
