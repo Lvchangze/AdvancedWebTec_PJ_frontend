@@ -24,7 +24,10 @@
       return {
         webSocket: null,
         userId: this.$store.state.currentId,
-        chatList: [],
+        chatList: [{
+          userId:'小提示',
+          msg:'靠近按F可拿起或放下'
+        }],
         diskCount:0,
         moveLock:false
       }
@@ -46,7 +49,6 @@
         this.webSocket.onmessage = function (event) {
           //获取服务端消息
           const message = JSON.parse(event.data) || {};
-          console.log(message);
           switch (message.type) {
             case "ENTER":
               that.handleEnter(message.userId,message.msg);

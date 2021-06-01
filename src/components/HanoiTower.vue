@@ -28,6 +28,9 @@
         userId: this.$store.state.currentId,
         diskModels:[],
         disks:[],
+        diskState:3,
+        diskSelected:-1,
+        stickNearby:-1
       }
     },
     methods: {
@@ -117,7 +120,6 @@
       initMobile() {
         let that = this;
         let onKeyDown = function (e) {
-          console.log(that.moveLock);
           switch (e.key) {
             case 'a':
               that.moveLeft = true;
@@ -130,6 +132,9 @@
               break;
             case 'w':
               that.moveForward = true;
+              break;
+            case 'f':
+              that.diskAction();
               break;
           }
         };
@@ -158,11 +163,11 @@
         let loader = new MMDLoader();
         let modelUrl = 'static/models/' + role + '/' + role + '.pmx';
         let g = new Three.Group();
-        loader.load(modelUrl, function (mesh) {
-          //that.players.set(userId,mesh);
-          mesh.scale.multiplyScalar(7);
-          //mesh.position.set(0, 0, 0);
-          g.add(mesh);
+        loader.load(modelUrl, function (model) {
+          //that.players.set(userId,model);
+          model.scale.multiplyScalar(7);
+          //model.position.set(0, 0, 0);
+          g.add(model);
         });
         let textLoader = new Three.FontLoader();
         textLoader.load('static/helvetiker_bold.typeface.json',font=>{
@@ -173,11 +178,11 @@
             bevelThickness: 1,
             bevelSize: 8,
           } );
-          let mesh = new Three.Mesh(geometry, new Three.MeshLambertMaterial({color: 0xCC3E38})
+          let textMesh = new Three.Mesh(geometry, new Three.MeshLambertMaterial({color: 0xCC3E38})
           );
-          mesh.scale.set(-1,1,1);
-          mesh.position.set(25, 150, 0);
-          g.add(mesh);
+          textMesh.scale.set(-1,1,1);
+          textMesh.position.set(25, 150, 0);
+          g.add(textMesh);
         });
         g.position.set(0,0,-170);
         this.scene.add(g);
@@ -188,6 +193,7 @@
       },
       handleDisk(msg){
         this.disks = JSON.parse(msg);
+        this.diskState = 1;
         for (let i = 0; i < this.diskCount; i++) {
           let disk = new Three.Mesh(
             new Three.CylinderGeometry(20 + i*5, 20 + i*5, 10, 100),
@@ -201,17 +207,24 @@
           }
           //在人手上
           else {
+            this.diskState = 3;
             disk.position.set(0, 100, 60);
-            this.players.get().add(disk);
+            this.players.get(this.disks[i].position).add(disk);
           }
         }
+        console.log(this.diskModels);
       },
       handleLift(userId, msg) {
+        if (userId===this.userId) return;
         this.liftObject(userId,Number(msg));
+        this.diskState = 3;
+        this.diskSelected = Number(msg);
       },
       handleDrop(userId, msg) {
+        if (userId===this.userId) return;
         let jsonDrop = JSON.parse(msg);
         this.dropObject(userId,jsonDrop.num,jsonDrop.stick);
+        this.diskState = 1;
       },
       handlePosition(userId,position){
         if (userId===this.userId) return;
@@ -316,16 +329,93 @@
         this.scene.add(this.diskModels[num]);
         this.disks[num].location = stick;
         this.disks[num].position = count;
+      },
+      diskAction(){
+        this.judgeDisk();
+        if (this.diskState===3 || this.diskSelected < 0 || this.stickNearby < 0) return;
+        if (this.diskState===1){
+          this.liftObject(this.userId,this.diskSelected);
+          this.sendLift(this.diskSelected);
+          this.diskState = 2;
+          this.sendDisk();
+          return;
+        }
+        if (this.diskState===2){
+          //判断盘子是否可以放置
+          let minNum = 6;
+          for (let i = 0; i < this.diskCount; i++) {
+            if (this.disks[i].location===this.stickNearby){
+              minNum = i;
+              break;
+            }
+          }
+          if (minNum < this.diskSelected){
+            this.$message.warning("大盘子不得放在小盘子上方");
+            return;
+          }
+          this.dropObject(this.userId,this.diskSelected,this.stickNearby);
+          this.sendDrop(this.diskSelected,this.stickNearby);
+          this.diskState = 1;
+          this.sendDisk();
+        }
+      },
+      judgeDisk(){
+        if (this.diskState===3) return;
+        for (let i = 0; i < 3; i++) {
+          if (Math.abs(this.players.get(this.userId).position.x + 200 - i*200) < 20 &&
+            Math.abs(this.players.get(this.userId).position.z - 100) < 20){
+            this.stickNearby = i+1;
+            break;
+          }
+        }
+        if (this.diskState===2) return;
+        for (let i = 0; i < this.diskCount; i++) {
+          if (this.disks[i].location===this.stickNearby){
+            this.diskSelected = i;
+            break;
+          }
+        }
       }
     },
     mounted() {
-      /*this.disks = new Array(4);
-      for (let i = this.diskCount; i > 0; i--) {
-        this.disks[0].push(i);
-      }*/
-
+      //this.diskModels = new Array(this.diskCount);
       this.players = new Map();
       this.init();
+      let that = this;
+      setTimeout(function () {
+        that.handleDisk(JSON.stringify(
+          [{
+            location:1,
+            position:3
+          },{
+            location:1,
+            position:2
+          },{
+            location:1,
+            position:1
+          },
+          ]
+        ));
+      },5000);
+      console.log(JSON.stringify(
+        [{
+          location:1,
+          position:5
+        },{
+          location:1,
+          position:4
+        },{
+          location:1,
+          position:3
+        },{
+          location:1,
+          position:2
+        },{
+          location:1,
+          position:1
+        },
+        ]
+      ));
     }
   }
 </script>
