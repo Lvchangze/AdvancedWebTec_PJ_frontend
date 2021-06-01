@@ -26,6 +26,7 @@
         moveBackward: false,
         moveRight: false,
         userId: this.$store.state.currentId,
+        diskModels:[],
         disks:[],
       }
     },
@@ -68,23 +69,14 @@
         this.scene.add(ambientLight);
       },
       initBase() {
-        let stick = new Three.Mesh(
-          new Three.CylinderGeometry(3, 3, 160, 100),
-          new Three.MeshLambertMaterial({color: 0x754E2F})
-        );
-        stick.position.set(-200, 80, 100);
-
-        let stick1 = stick.clone();
-        stick1.position.set(0, 80, 100);
-
-        let stick2 = stick.clone();
-        stick2.position.set(200, 80, 100);
-
-        let sticks = new Three.Group();
-        sticks.add(stick);
-        sticks.add(stick1);
-        sticks.add(stick2);
-        this.scene.add(sticks);
+        for (let i = 0; i < 3; i++) {
+          let stick = new Three.Mesh(
+            new Three.CylinderGeometry(3, 3, 160, 100),
+            new Three.MeshLambertMaterial({color: 0x754E2F})
+          );
+          stick.position.set(-200 + i * 200, 80, 100);
+          this.scene.add(stick);
+        }
 
         let base = new Three.Mesh(
           new Three.BoxGeometry(1200, 10, 700),
@@ -163,28 +155,67 @@
 
       },
       handleRole(userId,role){
-        let that = this;
         let loader = new MMDLoader();
         let modelUrl = 'static/models/' + role + '/' + role + '.pmx';
+        let g = new Three.Group();
         loader.load(modelUrl, function (mesh) {
-          that.players.set(userId,mesh);
+          //that.players.set(userId,mesh);
           mesh.scale.multiplyScalar(7);
-          mesh.position.set(0, 0, -170);
-          that.scene.add(mesh);
+          //mesh.position.set(0, 0, 0);
+          g.add(mesh);
         });
+        let textLoader = new Three.FontLoader();
+        textLoader.load('static/helvetiker_bold.typeface.json',font=>{
+          let geometry = new Three.TextGeometry( userId, {
+            font: font,
+            size: 10,
+            height: 5,
+            bevelThickness: 1,
+            bevelSize: 8,
+          } );
+          let mesh = new Three.Mesh(geometry, new Three.MeshLambertMaterial({color: 0xCC3E38})
+          );
+          mesh.scale.set(-1,1,1);
+          mesh.position.set(25, 150, 0);
+          g.add(mesh);
+        });
+        g.position.set(0,0,-170);
+        this.scene.add(g);
+        this.players.set(userId,g);
       },
       handleQuit(userId){
         this.scene.remove(this.players.get(userId))
       },
+      handleDisk(msg){
+        this.disks = JSON.parse(msg);
+        for (let i = 0; i < this.diskCount; i++) {
+          let disk = new Three.Mesh(
+            new Three.CylinderGeometry(20 + i*5, 20 + i*5, 10, 100),
+            new Three.MeshLambertMaterial({color: 0x76BF66})
+          );
+          this.diskModels.push(disk);
+          //在柱子上
+          if (this.disks[i].location < 4){
+            disk.position.set(-400 + this.disks[i].location * 200,-5 + this.disks[i].position * 10, 100);
+            this.scene.add(disk);
+          }
+          //在人手上
+          else {
+            disk.position.set(0, 100, 60);
+            this.players.get().add(disk);
+          }
+        }
+      },
       handleLift(userId, msg) {
-
+        this.liftObject(userId,Number(msg));
       },
       handleDrop(userId, msg) {
-
+        let jsonDrop = JSON.parse(msg);
+        this.dropObject(userId,jsonDrop.num,jsonDrop.stick);
       },
       handlePosition(userId,position){
         if (userId===this.userId) return;
-        let jsonPosition = JSON.parse(position)
+        let jsonPosition = JSON.parse(position);
         this.players.get(userId).position.set(jsonPosition.x,jsonPosition.y,jsonPosition.z);
       },
       sendPosition(){
@@ -220,28 +251,78 @@
           )
         )
       },
-      sendDrop(num){
+      sendDrop(num,stick){
         let userId = this.userId;
         this.ws.send(
           JSON.stringify(
             {
               type:"DROP",
               userId:userId,
-              msg:num,
+              msg:JSON.stringify(
+                {
+                  num:num,
+                  stick:stick
+                }
+              ),
               time:""
             }
           )
         )
+      },
+      sendDisk(){
+        let userId = this.userId;
+        this.ws.send(
+          JSON.stringify(
+            {
+              type:"DISK",
+              userId:userId,
+              msg:JSON.stringify(this.disks),
+              time:""
+            }
+          )
+        )
+      },
+      /*moveObject(object,x1,y1,z1,x2,y2,z2,intervalTime){
+        let startTime = Date.now();
+        let moveState;
+        function moveTick() {
+          let nowTime = Date.now();
+          let elapsed = nowTime - startTime;
+          let x = (x1 * (intervalTime - elapsed) + x2 * elapsed)/intervalTime;
+          let y = (y1 * (intervalTime - elapsed) + y2 * elapsed)/intervalTime;
+          let z = (z1 * (intervalTime - elapsed) + z2 * elapsed)/intervalTime;
+          object.position.set(x,y,z);
+          moveState = requestAnimationFrame(moveTick);
+        }
+        setTimeout(function () {
+          cancelAnimationFrame(moveState);
+        },intervalTime);
+      },*/
+      liftObject(userId,num){
+        this.scene.remove(this.diskModels[num]);
+        this.diskModels[num].position.set(0, 100, 60);
+        this.players.get(userId).add(this.diskModels[num]);
+        this.disks[num].location = 4;
+        this.disks[num].position = userId;
+      },
+      dropObject(userId,num,stick){
+        let count = 1;
+        for (let i = 0; i < this.diskCount; i++) {
+          if (i===num) continue;
+          if (this.disks[i].location===stick) count++;
+        }
+        this.diskModels[num].position.set(-400 + stick * 200,-5 + count * 10, 100);
+        this.players.get(userId).remove(this.diskModels[num]);
+        this.scene.add(this.diskModels[num]);
+        this.disks[num].location = stick;
+        this.disks[num].position = count;
       }
     },
     mounted() {
-      let stick1 = [];
-      for (let i = this.diskCount; i > 0; i++) {
-        stick1.push(i);
-      }
-      this.disks.push(stick1);
-      this.disks.push([]);
-      this.disks.push([]);
+      /*this.disks = new Array(4);
+      for (let i = this.diskCount; i > 0; i--) {
+        this.disks[0].push(i);
+      }*/
 
       this.players = new Map();
       this.init();
@@ -250,7 +331,6 @@
 </script>
 
 <style scoped>
-
   .hanoi-tower-wrapper, #hanoi-scene {
     height: 100%;
   }

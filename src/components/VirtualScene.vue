@@ -3,32 +3,6 @@
     <div class="test-wrapper">
       <div id="container"></div>
     </div>
-    <el-form>
-      <el-form-item>
-        <el-input auto-complete="off"
-                  placeholder="请输入聊天内容"
-                  type="textarea"
-                  v-model="sendMsg"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button round
-                   style="background-color: #356eff;border-color: #356eff;width: 260px;border-radius: 3px;margin-top: 25px;margin-bottom: 5px"
-                   type="primary" v-on:click="sendMessage">发送
-        </el-button>
-      </el-form-item>
-      <ul>
-        <template v-for="list in chatList">
-          <li>
-            {{ list.userId }}
-          </li>
-          <li>
-            {{ list.msg }}
-          </li>
-        </template>
-      </ul>
-    </el-form>
-
-
   </el-container>
 </template>
 
@@ -52,11 +26,7 @@
         moveLeft: false,
         moveBackward: false,
         moveRight: false,
-
         userId: this.$store.state.currentId,
-        webSocketChat: null,
-        sendMsg: "",
-        chatList: [],
       }
     },
     methods: {
@@ -127,28 +97,46 @@
       initPerson() {
         let that = this;
         let loader = new MMDLoader();
-        /*let helper = new MMDAnimationHelper();
-        loader.loadWithAnimation('static/烟绯/烟绯.pmx','static/Walk.vmd',function (mmd) {
-          helper.add(mmd.mesh,{
-            animation: mmd.animation,
-            physics:true
-          });
-          that.model = mmd.mesh;
-          that.scene.add(mmd.mesh);
-
-        })*/
+        let g = new Three.Group();
+        this.model = g;
         loader.load('static/烟绯/烟绯.pmx', function (mesh) {
-          that.model = mesh;
+          //that.model = mesh;
           mesh.scale.multiplyScalar(7);
-          mesh.position.set(0, 0, -170);
-          that.scene.add(mesh);
-        })
+          mesh.position.set(0, 0, 0);
+          g.add(mesh);
+        });
+        let disk = new Three.Mesh(
+          new Three.CylinderGeometry(20, 20, 10, 100),
+          new Three.MeshLambertMaterial({color: 0x76BF66})
+        );
+        disk.position.set(0, 100, 60);
+        g.add(disk);
+        g.position.set(0,0,-170);
+        this.scene.add(g);
+
+        let textLoader = new Three.FontLoader();
+        textLoader.load('static/helvetiker_bold.typeface.json',font=>{
+          let geometry = new Three.TextGeometry( 'lvchangze', {
+            font: font,
+            size: 10,
+            height: 5,
+            bevelThickness: 1,
+            bevelSize: 8,
+          } );
+          let mesh = new Three.Mesh(geometry, new Three.MeshLambertMaterial({color: 0xCC3E38})
+          );
+          mesh.scale.set(-1,1,1);
+          mesh.position.set(20, 150, 0);
+          g.add(mesh);
+        });
+
+
+        //g.remove(disk);
       },
       render() {
         let that = this;
         requestAnimationFrame(this.render);
         this.renderer.render(this.scene, this.camera);
-        //this.renderer.shadowMap.enabled = true;
 
         if (this.moveForward) {
           this.model.position.z += 5;
@@ -208,52 +196,9 @@
         document.addEventListener('keydown', onKeyDown, false);
         document.addEventListener('keyup', onKeyUp, false);
       },
-
-      initWebSocketChat() {
-        this.webSocketChat = new WebSocket('ws://localhost:8080/1')
-
-        this.webSocketChat.onopen = function () {
-          console.log("WebSocketChat连接成功");
-        };
-
-        let that = this;
-        this.webSocketChat.onmessage = function (event) {
-          //获取服务端消息
-          const message = JSON.parse(event.data) || {};
-          console.log(message)
-          if (message.type === "SPEAK") {
-            that.chatList.push(message)
-          }
-        };
-
-        this.webSocketChat.onclose = function (event) {
-          console.log('WebSocketChat关闭连接');
-        };
-
-        this.webSocketChat.onerror = function (event) {
-          console.log('WebSocketChat发生异常');
-        };
-
-        window.onbeforeunload = function () {
-          this.webSocketChat.close()
-        };
-      },
-      sendMessage() {
-        if (this.sendMsg !== "") {
-          this.webSocketChat.send(JSON.stringify({
-            userId: this.userId,
-            msg: this.sendMsg,
-          }))
-          this.sendMsg = ""
-        } else {
-          this.$message.error("请输入聊天内容")
-        }
-      },
     },
     mounted() {
       this.init();
-      this.initWebSocketChat();
-      this.sendMessage()
     },
   }
 </script>
