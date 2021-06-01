@@ -397,25 +397,6 @@
           ]
         ));
       },5000);
-      console.log(JSON.stringify(
-        [{
-          location:1,
-          position:5
-        },{
-          location:1,
-          position:4
-        },{
-          location:1,
-          position:3
-        },{
-          location:1,
-          position:2
-        },{
-          location:1,
-          position:1
-        },
-        ]
-      ));
     }
   }
 </script>
