@@ -69,7 +69,10 @@
               that.$refs.virtualScene.handleLift(message.userId, message.msg);
               break;
             case "DROP":
-              that.$refs.virtualScene.handleDrop(message.userId, message.msg)
+              that.$refs.virtualScene.handleDrop(message.userId, message.msg);
+              break;
+            case "DISK":
+              that.$refs.virtualScene.handleDisk(message.msg);
               break;
             default:
               break;

@@ -189,7 +189,13 @@
         this.players.set(userId,g);
       },
       handleQuit(userId){
-        this.scene.remove(this.players.get(userId))
+        this.scene.remove(this.players.get(userId));
+        if (this.diskState !== 3) return;
+        if (this.disks[this.diskSelected].location===4 && this.disks[this.diskSelected].position===userId){
+          this.diskState = 1;
+          this.dropObject(userId,this.diskSelected,this.stickNearby);
+          this.sendDisk();
+        }
       },
       handleDisk(msg){
         this.disks = JSON.parse(msg);
@@ -315,6 +321,7 @@
         this.scene.remove(this.diskModels[num]);
         this.diskModels[num].position.set(0, 100, 60);
         this.players.get(userId).add(this.diskModels[num]);
+        this.stickNearby = this.disks[num].location;
         this.disks[num].location = 4;
         this.disks[num].position = userId;
       },
@@ -329,6 +336,7 @@
         this.scene.add(this.diskModels[num]);
         this.disks[num].location = stick;
         this.disks[num].position = count;
+        this.judgeSuccess();
       },
       diskAction(){
         this.judgeDisk();
@@ -361,6 +369,7 @@
       },
       judgeDisk(){
         if (this.diskState===3) return;
+        this.stickNearby = -1;
         for (let i = 0; i < 3; i++) {
           if (Math.abs(this.players.get(this.userId).position.x + 200 - i*200) < 20 &&
             Math.abs(this.players.get(this.userId).position.z - 100) < 20){
@@ -369,19 +378,26 @@
           }
         }
         if (this.diskState===2) return;
+        this.diskSelected = -1;
         for (let i = 0; i < this.diskCount; i++) {
           if (this.disks[i].location===this.stickNearby){
             this.diskSelected = i;
             break;
           }
         }
+      },
+      judgeSuccess(){
+        for (let i = 0; i < this.diskCount; i++) {
+          if (this.disks[i].location!==3) return;
+        }
+        this.$message.success("成功啦！");
       }
     },
     mounted() {
       //this.diskModels = new Array(this.diskCount);
       this.players = new Map();
       this.init();
-      let that = this;
+      /*let that = this;
       setTimeout(function () {
         that.handleDisk(JSON.stringify(
           [{
@@ -396,7 +412,7 @@
           },
           ]
         ));
-      },5000);
+      },5000);*/
     }
   }
 </script>
