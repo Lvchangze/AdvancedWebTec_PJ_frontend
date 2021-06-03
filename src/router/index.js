@@ -76,8 +76,8 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       //token不存在先注释了,避免乱跳
-      // next('/login');
-      next()
+      next('/login');
+      // next()
     }
   }
 });

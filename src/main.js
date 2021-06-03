@@ -31,6 +31,18 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   });
 
+axios.interceptors.response.use(
+  response => {
+    if (response.data.hasOwnProperty("state")) {
+      const stateCode = response.data.state;
+      if (stateCode === 401) {
+        router.replace('/login')
+      }
+    }
+    return response
+  },
+)
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
