@@ -4,7 +4,8 @@
       <Chat :chat-list="chatList" :ws="webSocket" @lock="changeLock"/>
     </el-aside>
     <el-main class="scene-block">
-      <hanoi-tower ref="virtualScene" v-if="roomId < 4" :ws="webSocket" :disk-count="diskCount" :move-lock="moveLock"/>
+      <hanoi-tower ref="virtualScene" v-if="roomId < 4" :ws="webSocket"
+                   :disk-count="diskCount" :move-lock="moveLock" @npc="chatToNpc"/>
     </el-main>
   </el-container>
 </template>
@@ -33,6 +34,12 @@
       }
     },
     methods: {
+      chatToNpc(id){
+        this.chatList.push({
+          userId:'萨勒芬妮',
+          msg:"你好呀" + id + "!"
+        })
+      },
       changeLock(state){
         this.moveLock = state;
       },

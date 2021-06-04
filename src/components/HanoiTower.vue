@@ -8,6 +8,7 @@
   import * as Three from "three";
   import {MMDLoader} from "three/examples/jsm/loaders/MMDLoader";
   import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+  import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader";
 
   export default {
     name: "HanoiTower",
@@ -87,6 +88,25 @@
         );
         base.position.set(0, -5, 0);
         this.scene.add(base);
+
+        let texture = new Three.ImageUtils.loadTexture('static/models/seraphine/textures/userboy17.png')
+        let loader = new FBXLoader();
+        let that = this;
+        loader.load('static/models/seraphine/source/girl.fbx', function (obj) {
+          that.scene.add(obj);
+          obj.scale.multiplyScalar(0.2);
+          obj.position.set(250, 0, 10);
+          obj.traverse(function (child) {
+            let material = new Three.MeshPhongMaterial({
+              map: texture
+            });
+            child.material = material;
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+            }
+          });
+        });
       },
       render() {
         let that = this;
@@ -368,6 +388,9 @@
         }
       },
       judgeDisk(){
+        if (Math.abs(this.players.get(this.userId).position.x - 250) < 20 &&
+          Math.abs(this.players.get(this.userId).position.z - 10) < 20)
+          this.chatToNpc();
         if (this.diskState===3) return;
         this.stickNearby = -1;
         for (let i = 0; i < 3; i++) {
@@ -391,6 +414,9 @@
           if (this.disks[i].location!==3) return;
         }
         this.$message.success("成功啦！");
+      },
+      chatToNpc(){
+        this.$emit('npc',this.userId);
       }
     },
     mounted() {
