@@ -44,7 +44,8 @@
         this.moveLock = state;
       },
       initWebSocket() {
-        this.webSocket = new WebSocket("ws://localhost:8080/ws/" + this.roomId + "/" + this.userId);
+        this.webSocket = new WebSocket("ws://18.214.140.210:8080/ws/" + this.roomId + "/" + this.userId);
+        // this.webSocket = new WebSocket("ws://localhost:8080/ws/" + this.roomId + "/" + this.userId);
 
         let that = this;
 

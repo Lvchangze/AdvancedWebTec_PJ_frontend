@@ -7,15 +7,15 @@
           欢迎 {{userId}}
         </el-menu-item>
 
-        <el-menu-item @click="logout" index="3">
+        <el-menu-item @click="logout" index="3" style="float: right">
           <i class="el-icon-error"></i>
           退出登录
         </el-menu-item>
-        <el-menu-item @click="gotoUserInfo" index="2">
+        <el-menu-item @click="gotoUserInfo" index="2" style="float: right">
           <i class="el-icon-user-solid"></i>
           个人信息
         </el-menu-item>
-        <el-menu-item @click="gotoRooms" index="1">
+        <el-menu-item @click="gotoRooms" index="1" style="float: right">
           <i class="el-icon-menu"></i>
           房间列表
         </el-menu-item>
@@ -68,10 +68,6 @@
 
   .main-wrapper.el-main {
     height: 100%;
-  }
-
-  .el-menu-item {
-    float: right;
   }
 
 </style>
